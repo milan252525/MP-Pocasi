@@ -13,7 +13,6 @@ public class WeatherByCity {
     
     private String response_json, url;
     private final int response_code;
-    
     //promenne pro data ze zadosti
     private final double lon, lat, temp, pressure, humidity, temp_min, temp_max, visibility, speed, all, message;
     private final int weather_id, type, sys_id, cod;
