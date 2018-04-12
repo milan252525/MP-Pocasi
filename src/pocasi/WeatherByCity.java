@@ -195,13 +195,13 @@ public class WeatherByCity {
         r += "Wind speed: " + this.getWindSpeed() + " m/s\n";
         return r;
     }
-    
-    public static void main(String[] args){
-        try {
-            WeatherByCity x = new WeatherByCity("Plzen");
-            System.out.println(x.toString());
-        } catch (IOException ex) {
-            System.out.println("IOException:\n" + ex);
-        }
-    }
+//    
+//    public static void main(String[] args){
+//        try {
+//            WeatherByCity x = new WeatherByCity("Plzen");
+//            System.out.println(x.toString());
+//        } catch (IOException ex) {
+//            System.out.println("IOException:\n" + ex);
+//        }
+//    }
 }
