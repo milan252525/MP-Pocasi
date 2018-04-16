@@ -14,8 +14,8 @@ public class Pocasi {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-      Okno o = new Okno("okno", 500, 500);
+    public static void main(String[] args){
+      Okno o = new Okno("okno", 900, 500);
     }
     
 }
