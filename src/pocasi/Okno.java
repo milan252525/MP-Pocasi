@@ -42,7 +42,7 @@ public class Okno extends JFrame{
      
      
      backgroundPanel = new JPanel(new GridBagLayout());
-     backgroundPanel.setBackground(Color.WHITE);
+     backgroundPanel.setBackground(Color.blue);
      frame.setContentPane(backgroundPanel);   
 
      frame.add(new MujPanel(sirka,vyska).getPanel());
