@@ -12,15 +12,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
 
 /**
@@ -33,6 +30,7 @@ public class MujPanel {
    private JLabel label;
    private URLImage ui;
    
+   
    private Handler handler;
    private Image img;
    
@@ -40,13 +38,14 @@ public class MujPanel {
 
    private JTextField textfield;
    private WeatherByCity weather;
-    private final int sirka;
-    private final int vyska;
+   private int sirka, vyska;
+
    
-    public MujPanel(int sirka,int vyska) {
+    public MujPanel(Handler handler,int sirka,int vyska) {
       this.sirka = sirka;
       this.vyska = vyska;
-      handler = new Handler(this);
+      this.handler = handler;
+      
       img  = null;
            
       panel1 = new JPanel(null);

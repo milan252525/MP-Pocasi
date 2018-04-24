@@ -10,24 +10,34 @@ package pocasi;
  * @author bohou
  */
 public class Handler {
-   private MujPanel mujPanel;
+   private Okno okno;
     
-    public Handler(MujPanel mujPanel){
-           this.mujPanel = mujPanel;
+    public Handler(Okno okno){
+           this.okno = okno;
     
     }
 
-    public MujPanel getMujpanel() {
-        return mujPanel;
+    public Okno getOkno() {
+        return okno;
     }
 
-    public void setMujpanel(MujPanel mujpanel) {
-        this.mujPanel = mujpanel;
-    }
-    
-    public  WeatherByCity getWeatherByCity(){
-       return mujPanel.getWeather();
+    public void setOkno(Okno okno) {
+        this.okno = okno;
     }
 
+    public WeatherByCity getWeather(){
+        return okno.getMujPanel().getWeather();
+    }
     
+    public String getWeatherIcon(){
+    return okno.getMujPanel().getWeather().getWeatherIcon();
+    }
+    
+    public int getSirka(){
+    return okno.getSirka();
+    }
+    
+    public int getVyska(){
+    return okno.getVyska();
+    }
 }

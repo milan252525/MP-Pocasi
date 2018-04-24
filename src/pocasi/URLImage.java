@@ -15,7 +15,7 @@ public class URLImage {
 
     public URLImage(Handler handler) throws MalformedURLException, IOException {
         this.handler = handler;
-        url = new URL("http://openweathermap.org/img/w/" +  handler.getWeatherByCity().getWeatherIcon() +".png");
+        url = new URL("http://openweathermap.org/img/w/" +  handler.getWeatherIcon() +".png");
         img = ImageIO.read(url);
        
     }
