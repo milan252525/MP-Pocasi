@@ -5,11 +5,8 @@
  */
 package pocasi;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
@@ -30,7 +27,6 @@ public class Okno extends JFrame{
         this.nadpis = nadpis;
         this.sirka = sirka;
         this.vyska = vyska;
-        
 
         udělatDisplay();
        
@@ -43,21 +39,25 @@ public class Okno extends JFrame{
      frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
      frame.setVisible(true);
      frame.setLocationRelativeTo(null);
-     frame.setResizable(true); 
      
      handler = new Handler(this);
-     mujpanel = new MujPanel(handler,sirka,vyska);
+     mujpanel = new MujPanel(handler,sirka,vyska);   
+     mujpanel.start();
      
+     //přidání pozadí jako obrázek
      backgroundImageOnPanel = new BackgroundImageOnPanel("src\\obrazky\\heaven.jpg",handler);
      backgroundImageOnPanel.setLayout(new GridBagLayout());
-
-     frame.setContentPane(backgroundImageOnPanel);   
+     frame.setContentPane(backgroundImageOnPanel);  
+     
+     //zvětšení pozadí
      frame.getContentPane().addComponentListener(new ComponentAdapter() {
          @Override
-         public void componentResized(ComponentEvent e){  
-         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-         sirka = (int) screenSize.getWidth();
-         vyska = (int) screenSize.getHeight();
+         public void componentResized(ComponentEvent e){
+           Dimension newSize = e.getComponent().getBounds().getSize(); 
+           vyska = (int)newSize.getHeight();
+           sirka = (int)newSize.getWidth();
+           
+           backgroundImageOnPanel.repaint();
          }
 });
      backgroundImageOnPanel.add(mujpanel.getPanel());
@@ -76,5 +76,8 @@ public class Okno extends JFrame{
     public MujPanel getMujPanel(){
         return mujpanel;
     }
+
+    
+    
 }
 

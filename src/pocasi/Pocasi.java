@@ -16,8 +16,6 @@ public class Pocasi {
      */
     public static void main(String[] args){
       Okno o = new Okno("okno", 900, 500);
-      Cas c = new Cas();
-      c.start();
       
     }
     

@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package pocasi;
-
 /**
  *
  * @author bohou
@@ -14,7 +13,6 @@ public class Handler {
     
     public Handler(Okno okno){
            this.okno = okno;
-    
     }
 
     public Okno getOkno() {
@@ -39,5 +37,6 @@ public class Handler {
     
     public int getVyska(){
     return okno.getVyska();
-    }
+    }  
+
 }

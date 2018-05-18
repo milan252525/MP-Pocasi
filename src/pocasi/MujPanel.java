@@ -12,6 +12,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,11 +26,11 @@ import javax.swing.JTextField;
  *
  * @author bohou
  */
-public class MujPanel {
+public class MujPanel extends Thread{
    private JPanel panel1;
    private JButton button;
-   private JLabel label;
-   private URLImage ui;
+   private JLabel label,labelcas;
+   private IkonyPocasi  ikony;
    
    
    private Handler handler;
@@ -40,6 +42,9 @@ public class MujPanel {
    private WeatherByCity weather;
    private int sirka, vyska;
 
+   
+    int hodiny, minuty, sekundy;
+     boolean running = true;
    
     public MujPanel(Handler handler,int sirka,int vyska) {
       this.sirka = sirka;
@@ -66,39 +71,62 @@ public class MujPanel {
               try {
             weather = new WeatherByCity(textfield.getText());
             System.out.println(weather.toString());
-            
+                        
             textarea.setText(weather.toString()); 
-            ui = new URLImage(handler);
+            ikony = new IkonyPocasi (handler);
             
-            img = ui.getImg();
+            img = ikony.getImg();
             label.setIcon( new ImageIcon(img));
-            
-            
-    
+            label.setBounds(0, 0, ikony.getSirka(), ikony.getVyska());
             
         } catch (IOException ex) {
+            textarea.setText("Nenasli jsme " + ":" + textfield.getText()+ ": město");
             System.out.println("IOException:\n" + ex);
+            
         }
          }
      });
      
     panel1.add(button);
 
+     label = new JLabel(); 
+     panel1.add(label);  
+     
+      textarea = new JTextArea();
+      textarea.setOpaque(false);
+      textarea.setBounds(0,vyska/2,vyska/2,200);
+      textarea.setEditable(false);
+      textarea.setVisible(true);
+      textarea.setFont(new Font("Arial",Font.PLAIN,18));
+      panel1.add(textarea);
+      
+     labelcas = new JLabel();
+     labelcas.setBounds(750, 0, 150, 100);
+     labelcas.setFont(new Font ("Calibri",Font.BOLD,50));
+     panel1.add(labelcas);  
+      
+    }
+    //beh casu
+    @Override
+    public void run(){
         
-   
-    textarea = new JTextArea();
-    textarea.setOpaque(false);
-    textarea.setBounds(0,vyska/2,vyska/2,200);
-    textarea.setEditable(false);
-    textarea.setFont(new Font("Arial",Font.PLAIN,18));
-    panel1.add(textarea);
-         
-    label = new JLabel();
-    label.setBounds(0, 0, 200, 200);
-    panel1.add(label);
+    while(running){
+    Calendar c = GregorianCalendar.getInstance();      
+    hodiny = c.get(Calendar.HOUR_OF_DAY);
+    minuty = c.get(Calendar.MINUTE);
+    sekundy = c.get(Calendar.SECOND);
+         try {
+             Thread.sleep(1000);
+         } catch (InterruptedException ex) {
+             System.out.println("nechce se mu spat");
+         }
+//    System.out.println("hod: " + hodiny + " min: " + minuty + " sek: " + sekundy);     
+         labelcas.setText(hodiny + ":" + minuty );
+     
+          }
+        
+    }
     
-       
-    } 
 
     public JPanel getPanel() {
         return panel1;
@@ -108,4 +136,7 @@ public class MujPanel {
         return weather;
     }
 
+    public JLabel getLabelcas() {
+        return labelcas;
+    }
 }

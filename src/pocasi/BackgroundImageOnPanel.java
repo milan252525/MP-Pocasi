@@ -26,12 +26,11 @@ private Handler handler;
     }
     
     
-    @Override
+  @Override
   protected void paintComponent(Graphics g) {
 
     super.paintComponent(g);
         g.drawImage(image, 0, 0,handler.getSirka(),handler.getVyska(), null);
-//        System.out.println(handler.getSirka());
         
    }
 }
