@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import java.util.Arrays;
 import org.json.JSONException;
 
 public class WeatherForecast {
@@ -16,7 +15,7 @@ public class WeatherForecast {
     
     private String response_json, url;
     private int response_code;
-    private boolean funguje;
+    private boolean funguje = true;
     
     //promenne pro data ze zadosti
     private String[][] array;
@@ -78,10 +77,10 @@ public class WeatherForecast {
             this.funguje = false;
         }
     }
-    
-    public static void main(String[] args) throws IOException{
-        WeatherForecast x = new WeatherForecast("Plzeň");
-        System.out.println(x.response_json);
-        System.out.println(Arrays.deepToString(x.array));
-    }
+//    
+//    public static void main(String[] args) throws IOException{
+//        WeatherForecast x = new WeatherForecast("Plzeň");
+//        System.out.println(x.response_json);
+//        System.out.println(Arrays.deepToString(x.array));
+//    }
 }
