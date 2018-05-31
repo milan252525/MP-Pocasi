@@ -51,7 +51,7 @@ public class WeatherForecast {
             JSONObject jo = new JSONObject(this.response_json);
             JSONArray ja = jo.getJSONArray("list");
 
-            this.array = new String[10][3];
+            this.array = new String[10][4];
 
             int x = 0;
             for (int i = 0; i < ja.length(); i++) {
@@ -63,11 +63,13 @@ public class WeatherForecast {
                 String popis = w.getString("description");
                 int date = one_day.getInt("dt");
                 java.util.Date time = new java.util.Date((long)date*1000);
+                String icon = w.getString("icon");
 
                 if(i % 4 == 0){ 
                     this.array[x][0] = Double.toString(tepl);
                     this.array[x][1] = Double.toString(time.getHours());
                     this.array[x][2] = popis;
+                    this.array[x][3] = popis;
                     //System.out.println(this.array[x][0] + " " + this.array[x][1]);
                     x++;
                 }
