@@ -9,7 +9,7 @@ package pocasi;
  * @author bohou
  */
 public class Handler {
-   private Okno okno;
+   private static Okno okno;
     
     public Handler(Okno okno){
            this.okno = okno;
@@ -23,12 +23,20 @@ public class Handler {
         this.okno = okno;
     }
 
-    public WeatherByCity getWeather(){
-        return okno.getMujPanel().getWeather();
+    public WeatherByCity getWeatherByCity(){
+        return okno.getMujPanel().getWeatherByCity();
     }
     
-    public String getWeatherIcon(){
-    return okno.getMujPanel().getWeather().getWeatherIcon();
+    public String getWeatherByCityIcon(){
+        return okno.getMujPanel().getWeatherByCity().getWeatherIcon();
+    }
+    
+    public WeatherForecast getWeatherForecast(){
+        return okno.getMujPanel().getWeatherForecast();
+    }
+    
+    public String getWeatherForecastIcon(int x){
+    return okno.getMujPanel().getWeatherForecast().getArrayValue(x,3);
     }
     
     public int getSirka(){
@@ -37,6 +45,6 @@ public class Handler {
     
     public int getVyska(){
     return okno.getVyska();
-    }  
-
+    } 
+     
 }

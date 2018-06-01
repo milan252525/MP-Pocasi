@@ -69,7 +69,7 @@ public class WeatherForecast {
                     this.array[x][0] = Double.toString(tepl);
                     this.array[x][1] = Double.toString(time.getHours());
                     this.array[x][2] = popis;
-                    this.array[x][3] = popis;
+                    this.array[x][3] = icon;
                     //System.out.println(this.array[x][0] + " " + this.array[x][1]);
                     x++;
                 }
@@ -79,10 +79,14 @@ public class WeatherForecast {
             this.funguje = false;
         }
     }
-//    
+    
+    public String getArrayValue(int x, int y){
+       return this.array[x][y]; 
+    }
 //    public static void main(String[] args) throws IOException{
 //        WeatherForecast x = new WeatherForecast("Plzeň");
 //        System.out.println(x.response_json);
 //        System.out.println(Arrays.deepToString(x.array));
-//    }
-}
+//        System.out.println(x.array[3][3]);
+//    }   
+}  

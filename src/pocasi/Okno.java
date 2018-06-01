@@ -47,7 +47,7 @@ public class Okno extends JFrame{
      //přidání pozadí jako obrázek
      backgroundImageOnPanel = new BackgroundImageOnPanel("src\\obrazky\\heaven.jpg",handler);
      backgroundImageOnPanel.setLayout(new GridBagLayout());
-     frame.setContentPane(backgroundImageOnPanel);  
+     frame.setContentPane(backgroundImageOnPanel);
      
      //zvětšení pozadí
      frame.getContentPane().addComponentListener(new ComponentAdapter() {
@@ -56,7 +56,6 @@ public class Okno extends JFrame{
            Dimension newSize = e.getComponent().getBounds().getSize(); 
            vyska = (int)newSize.getHeight();
            sirka = (int)newSize.getWidth();
-           
            backgroundImageOnPanel.repaint();
          }
 });
