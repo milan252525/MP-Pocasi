@@ -65,7 +65,7 @@ public class WeatherForecast {
                 java.util.Date time = new java.util.Date((long)date*1000);
                 String icon = w.getString("icon");
 
-                if(i % 4 == 0){ 
+                if(i % 8 == 0){ 
                     this.array[x][0] = Double.toString(tepl);
                     this.array[x][1] = Double.toString(time.getHours());
                     this.array[x][2] = popis;

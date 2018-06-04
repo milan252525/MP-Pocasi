@@ -110,6 +110,12 @@ public class MujPanel extends Thread{
              catch(Exception exc){
                  textarea.setText(textfield.getText() + " nenalezeno!\n");
                  img = null;
+                 label1.setIcon(null);
+                 label2.setIcon(null);
+                 label3.setIcon(null);
+                 label1.setText(null);
+                 label2.setText(null);
+                 label3.setText(null);
                  label.setIcon(null);
              }
          }
