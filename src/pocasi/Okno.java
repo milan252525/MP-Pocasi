@@ -16,15 +16,13 @@ import javax.swing.JPanel;
 
 
 public class Okno extends JFrame{
-   private String nadpis;
    private int vyska,sirka;
    private JFrame frame;
    private JPanel backgroundImageOnPanel;
    private MujPanel mujpanel;
    private Handler handler;
     
-    public Okno(String nadpis, int sirka, int vyska){
-        this.nadpis = nadpis;
+    public Okno(int sirka, int vyska){
         this.sirka = sirka;
         this.vyska = vyska;
 
@@ -34,8 +32,9 @@ public class Okno extends JFrame{
     
     
      public void udělatDisplay(){
-     frame = new JFrame(nadpis); 
+     frame = new JFrame(); 
      frame.setSize(sirka, vyska);
+     frame.setTitle("Weather Forecast");
      frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
      frame.setVisible(true);
      frame.setLocationRelativeTo(null);
