@@ -4,47 +4,63 @@
  * and open the template in the editor.
  */
 package pocasi;
+
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
 /**
  *
  * @author bohou
  */
 public class Handler {
-   private static Okno okno;
+   private static Manager manager;
     
-    public Handler(Okno okno){
-           this.okno = okno;
+    public Handler(Manager manager){
+           this.manager = manager;
     }
 
-    public Okno getOkno() {
-        return okno;
+    public Manager getManager() {
+        return manager;
     }
+    
 
-    public void setOkno(Okno okno) {
-        this.okno = okno;
+    public void setManager(Manager manager) {
+        this.manager = manager;
     }
 
     public WeatherByCity getWeatherByCity(){
-        return okno.getMujPanel().getWeatherByCity();
+        return manager.getPanelSearch().getWeatherByCity();
     }
     
     public String getWeatherByCityIcon(){
-        return okno.getMujPanel().getWeatherByCity().getWeatherIcon();
+        return manager.getPanelSearch().getWeatherByCity().getWeatherIcon();
     }
     
     public WeatherForecast getWeatherForecast(){
-        return okno.getMujPanel().getWeatherForecast();
+        return manager.getPanelSearch().getWeatherForecast();
     }
     
     public String getWeatherForecastIcon(int x){
-    return okno.getMujPanel().getWeatherForecast().getArrayValue(x,3);
+        return manager.getPanelSearch().getWeatherForecast().getArrayValue(x,3);
     }
     
-    public int getSirka(){
-    return okno.getSirka();
+    public JLabel getLabel(){
+        return manager.getPanelWBC().getLabel();
     }
     
-    public int getVyska(){
-    return okno.getVyska();
-    } 
-     
+    public JTextArea getTextArea(){
+        return manager.getPanelWBC().getTextarea();
+    }
+    
+    public JLabel getLabel1(){
+        return manager.getPanelWF().getLabel1();
+    }
+    
+    public JLabel getLabel2(){
+        return manager.getPanelWF().getLabel2();
+    }
+    
+    public JLabel getLabel3(){
+        return manager.getPanelWF().getLabel3();
+    }
 }
