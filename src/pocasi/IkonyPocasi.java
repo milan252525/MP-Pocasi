@@ -2,39 +2,57 @@
 package pocasi;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class IkonyPocasi {
-   private ImageIcon icon,icon2;
-   private Image img;
+   private InputStream stream;
+   private BufferedImage img;
+   private ImageIcon icon;
    private Handler handler;
-   private String path,path2;
    private final int sirkaVelkychIkon = 200;
    private final int vyskaVelkychIkon = 200;
    private final int sirkaMalychIkon = 50;
    private final int vyskaMalychIkon = 50; 
-   private Image[] ikonyForecast;
+   private ImageIcon[] ikonyForecast;
    
 
     public IkonyPocasi (Handler handler){
         this.handler = handler;
-        path = "src\\icons\\"+handler.getWeatherByCityIcon()+".png";
-        icon = new ImageIcon(path);
-        img = icon.getImage().getScaledInstance(sirkaVelkychIkon, vyskaVelkychIkon,Image.SCALE_DEFAULT);
-         ikonyForecast = new Image[3];
         
+         
+        try {
+            stream = new BufferedInputStream(new FileInputStream("src\\icons\\"+ handler.getWeatherByCityIcon() +".png"));
+            img = ImageIO.read(stream);
+            Image image = img.getScaledInstance(sirkaVelkychIkon, vyskaVelkychIkon,Image.SCALE_SMOOTH);
+            icon = new ImageIcon(image);
+           
+        } catch (IOException ex) {
+            System.out.println("NO IMAGE");
+        }
+            
+        ikonyForecast = new ImageIcon[3];
         for (int i = 0; i < ikonyForecast.length; i++) {
-            path2 = "src\\icons\\"+handler.getWeatherForecastIcon(i)+".png";
-            icon2 = new ImageIcon(path2);
-            ikonyForecast[i] = icon2.getImage().getScaledInstance(sirkaMalychIkon, vyskaMalychIkon,Image.SCALE_DEFAULT);
+        try {
+            stream = new BufferedInputStream(new FileInputStream("src\\icons\\"+ handler.getWeatherForecastIcon(i) +".png"));
+            img = ImageIO.read(stream);
+            Image image = img.getScaledInstance(sirkaMalychIkon, vyskaMalychIkon,Image.SCALE_DEFAULT);
+            ikonyForecast[i] = new ImageIcon(image);
+        } catch (IOException ex) {
+            System.out.println("NO IMAGE");
+        }
         } 
     }
-    
 
-    public Image getImg() {
-        return img;
+    public ImageIcon getIcon() {
+        return icon;
     }
-
+    
     public int getSirkaVelkychIkon() {
         return sirkaVelkychIkon;
     }
@@ -51,7 +69,7 @@ public class IkonyPocasi {
         return vyskaMalychIkon;
     }
 
-    public Image getIkonyForecast(int x) {
+    public ImageIcon getIkonyForecast(int x) {
         return ikonyForecast[x];
     }
     

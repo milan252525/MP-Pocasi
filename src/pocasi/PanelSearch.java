@@ -29,7 +29,6 @@ public class PanelSearch {
     private JPanel panelSearch;
     private Font font;
     private JTextField textfield;
-    private Image img;
     private IkonyPocasi  ikony;
     private WeatherByCity weatherByCity;
     private WeatherForecast weatherForecast;
@@ -42,7 +41,6 @@ public class PanelSearch {
         this.handler = handler;
         
         
-        img  = null;
         panelSearch = new JPanel(null){
        @Override
     protected void paintComponent(Graphics g)
@@ -72,27 +70,26 @@ public class PanelSearch {
                 weatherForecast = new WeatherForecast(textfield.getText());
                 handler.getTextArea().setText(weatherByCity.toString());
                 ikony = new IkonyPocasi(handler);
-                img = ikony.getImg();
 
-                handler.getLabel().setIcon( new ImageIcon(img));
+                handler.getLabel().setIcon(ikony.getIcon());
                 handler.getLabel().setBounds(0, 0, ikony.getSirkaVelkychIkon(), ikony.getVyskaVelkychIkon());
                 
                 
-                handler.getLabel1().setIcon(new ImageIcon(ikony.getIkonyForecast(0)));
+                handler.getLabel1().setIcon(ikony.getIkonyForecast(0));
                 handler.getLabel1().setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(0, 0)+ 
                                                                             "<br/>" + "Time: "+ weatherForecast.getArrayValue(0, 1)+
                                                                             "<br/>" +  weatherForecast.getArrayValue(0, 2) + "</html>");
                 handler.getLabel1().setHorizontalTextPosition(JLabel.CENTER);
                 handler.getLabel1().setVerticalTextPosition(JLabel.BOTTOM);
                 
-                handler.getLabel2().setIcon(new ImageIcon(ikony.getIkonyForecast(1)));
+                handler.getLabel2().setIcon(ikony.getIkonyForecast(1));
                 handler.getLabel2().setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(1, 0)+ 
                                                                             "<br/>" + "Time: "+weatherForecast.getArrayValue(1, 1)+ 
                                                                             "<br/>" + weatherForecast.getArrayValue(1, 2)+ "</html>");
                 handler.getLabel2().setHorizontalTextPosition(JLabel.CENTER);
                 handler.getLabel2().setVerticalTextPosition(JLabel.BOTTOM);
                 
-                handler.getLabel3().setIcon(new ImageIcon(ikony.getIkonyForecast(2)));
+                handler.getLabel3().setIcon(ikony.getIkonyForecast(2));
                 handler.getLabel3().setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(2, 0)+ 
                                                                             "<br/>" + "Time: "+weatherForecast.getArrayValue(2, 1)+ 
                                                                             "<br/>" + weatherForecast.getArrayValue(2, 2)+ "</html>");
@@ -101,7 +98,6 @@ public class PanelSearch {
              }
              catch(Exception exc){
                  handler.getTextArea().setText(textfield.getText() + "\n" + " NOT FOUND!\n");
-                 img = null;
                  handler.getLabel1().setIcon(null);
                  handler.getLabel2().setIcon(null);
                  handler.getLabel3().setIcon(null);
@@ -158,5 +154,7 @@ public class PanelSearch {
     public WeatherForecast getWeatherForecast() {
         return weatherForecast;
     }
+    
+    
 
 }

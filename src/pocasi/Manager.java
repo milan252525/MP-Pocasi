@@ -40,8 +40,8 @@ public class Manager extends javax.swing.JFrame {
         panelBarva = new PanelBarva();
         panelBarva.setBounds(100,420,180, 50);
         panelBarva.setOpaque(false);
-        panelBarva.setVisible(true);
         panelBarva.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
+        panelBarva.setVisible(true);      
         add(panelBarva);
         
         jDialog1.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
