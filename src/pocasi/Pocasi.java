@@ -16,7 +16,7 @@ import javax.swing.border.MatteBorder;
  *
  * @author bohou
  */
-public class Manager extends javax.swing.JFrame {
+public class Pocasi extends javax.swing.JFrame {
 
     public boolean AktivHodiny;
     public boolean AktivHWeatherByCity;
@@ -34,7 +34,7 @@ public class Manager extends javax.swing.JFrame {
     /**
      * Creates new form Manager
      */
-    public Manager() {
+    public Pocasi() {
         initComponents();
         setLocationRelativeTo(null);
         panelBarva = new PanelBarva();
@@ -142,7 +142,6 @@ public class Manager extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(680, 500));
         setMinimumSize(new java.awt.Dimension(680, 500));
         setResizable(false);
 
@@ -687,20 +686,20 @@ public class Manager extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Manager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Manager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Manager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Manager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Manager().setVisible(true);
+                new Pocasi().setVisible(true);
                
             }
         });

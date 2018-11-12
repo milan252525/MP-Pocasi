@@ -13,54 +13,54 @@ import javax.swing.JTextArea;
  * @author bohou
  */
 public class Handler {
-   private static Manager manager;
+   private static Pocasi pocasi;
     
-    public Handler(Manager manager){
-           this.manager = manager;
+    public Handler(Pocasi pocasi){
+           this.pocasi = pocasi;
     }
 
-    public Manager getManager() {
-        return manager;
+    public Pocasi getPocasi() {
+        return pocasi;
     }
     
 
-    public void setManager(Manager manager) {
-        this.manager = manager;
+    public void setPocasi(Pocasi pocasi) {
+        this.pocasi = pocasi;
     }
 
     public WeatherByCity getWeatherByCity(){
-        return manager.getPanelSearch().getWeatherByCity();
+        return pocasi.getPanelSearch().getWeatherByCity();
     }
     
     public String getWeatherByCityIcon(){
-        return manager.getPanelSearch().getWeatherByCity().getWeatherIcon();
+        return pocasi.getPanelSearch().getWeatherByCity().getWeatherIcon();
     }
     
     public WeatherForecast getWeatherForecast(){
-        return manager.getPanelSearch().getWeatherForecast();
+        return pocasi.getPanelSearch().getWeatherForecast();
     }
     
     public String getWeatherForecastIcon(int x){
-        return manager.getPanelSearch().getWeatherForecast().getArrayValue(x,3);
+        return pocasi.getPanelSearch().getWeatherForecast().getArrayValue(x,3);
     }
     
     public JLabel getLabel(){
-        return manager.getPanelWBC().getLabel();
+        return pocasi.getPanelWBC().getLabel();
     }
     
     public JTextArea getTextArea(){
-        return manager.getPanelWBC().getTextarea();
+        return pocasi.getPanelWBC().getTextarea();
     }
     
     public JLabel getLabel1(){
-        return manager.getPanelWF().getLabel1();
+        return pocasi.getPanelWF().getLabel1();
     }
     
     public JLabel getLabel2(){
-        return manager.getPanelWF().getLabel2();
+        return pocasi.getPanelWF().getLabel2();
     }
     
     public JLabel getLabel3(){
-        return manager.getPanelWF().getLabel3();
+        return pocasi.getPanelWF().getLabel3();
     }
 }

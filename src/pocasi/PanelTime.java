@@ -93,7 +93,7 @@ public class PanelTime extends Thread{
             hodiny = c.get(Calendar.HOUR_OF_DAY);
             minuty = c.get(Calendar.MINUTE);
             sekundy = c.get(Calendar.SECOND);
-            labelcas.setText(hodiny + ":" + minuty );
+            labelcas.setText(String.format("%02d:%02d",hodiny,minuty));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {

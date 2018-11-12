@@ -27,10 +27,12 @@ public class IkonyPocasi {
         
          
         try {
-            stream = new BufferedInputStream(new FileInputStream("src\\icons\\"+ handler.getWeatherByCityIcon() +".png"));
-            img = ImageIO.read(stream);
-            Image image = img.getScaledInstance(sirkaVelkychIkon, vyskaVelkychIkon,Image.SCALE_SMOOTH);
-            icon = new ImageIcon(image);
+             stream = getClass().getClassLoader().getResourceAsStream("icons/"+ handler.getWeatherByCityIcon() +".png");
+             img = ImageIO.read(stream);
+             Image image = img.getScaledInstance(sirkaVelkychIkon, vyskaVelkychIkon,Image.SCALE_SMOOTH);
+             icon = new ImageIcon(image);
+            
+           
            
         } catch (IOException ex) {
             System.out.println("NO IMAGE");
@@ -39,7 +41,7 @@ public class IkonyPocasi {
         ikonyForecast = new ImageIcon[3];
         for (int i = 0; i < ikonyForecast.length; i++) {
         try {
-            stream = new BufferedInputStream(new FileInputStream("src\\icons\\"+ handler.getWeatherForecastIcon(i) +".png"));
+            stream = getClass().getClassLoader().getResourceAsStream("icons/"+ handler.getWeatherForecastIcon(i) +".png");
             img = ImageIO.read(stream);
             Image image = img.getScaledInstance(sirkaMalychIkon, vyskaMalychIkon,Image.SCALE_DEFAULT);
             ikonyForecast[i] = new ImageIcon(image);
