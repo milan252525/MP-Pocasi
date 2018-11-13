@@ -208,7 +208,7 @@ public class Pocasi extends javax.swing.JFrame {
             }
         });
 
-        WeatherForCast.setText("Weather For Cast");
+        WeatherForCast.setText("Weather Forecast");
         WeatherForCast.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WeatherForCastActionPerformed(evt);
@@ -233,7 +233,7 @@ public class Pocasi extends javax.swing.JFrame {
                     .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(WeatherForCast)
                     .addComponent(WeatherByCity))
-                .addContainerGap(471, Short.MAX_VALUE))
+                .addContainerGap(469, Short.MAX_VALUE))
         );
         nastaveniMainPanelLayout.setVerticalGroup(
             nastaveniMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
