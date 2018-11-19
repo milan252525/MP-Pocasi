@@ -74,7 +74,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="mainButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="main"/>
+            <Property name="text" type="java.lang.String" value="Main"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mainButtonActionPerformed"/>
@@ -116,7 +116,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="okTlacitko">
       <Properties>
-        <Property name="text" type="java.lang.String" value="ok"/>
+        <Property name="text" type="java.lang.String" value="Confirm"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okTlacitkoActionPerformed"/>
@@ -167,7 +167,7 @@
           <SubComponents>
             <Component class="javax.swing.JCheckBox" name="hodiny">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Hodiny"/>
+                <Property name="text" type="java.lang.String" value="Clock"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hodinyActionPerformed"/>

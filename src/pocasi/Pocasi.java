@@ -145,7 +145,7 @@ public class Pocasi extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(680, 500));
         setResizable(false);
 
-        mainButton.setText("main");
+        mainButton.setText("Main");
         mainButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mainButtonActionPerformed(evt);
@@ -185,7 +185,7 @@ public class Pocasi extends javax.swing.JFrame {
         });
         horniTlacitka.add(wfButton);
 
-        okTlacitko.setText("ok");
+        okTlacitko.setText("Confirm");
         okTlacitko.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okTlacitkoActionPerformed(evt);
@@ -194,7 +194,7 @@ public class Pocasi extends javax.swing.JFrame {
 
         panelProOstatniPanely.setLayout(new java.awt.CardLayout());
 
-        hodiny.setText("Hodiny");
+        hodiny.setText("Clock");
         hodiny.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hodinyActionPerformed(evt);
