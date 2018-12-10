@@ -66,6 +66,7 @@ public class PanelSearch {
          @Override
          public void actionPerformed(ActionEvent e) {
              try{
+                new test.Mapa().setVisible(true);
                 weatherByCity = new WeatherByCity(textfield.getText());
                 weatherForecast = new WeatherForecast(textfield.getText());
                 handler.getTextArea().setText(weatherByCity.toString());
