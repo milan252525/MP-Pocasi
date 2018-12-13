@@ -12,6 +12,7 @@ mydb = mysql.connector.connect(
   database="pocasi"
 )
 
+#mesto, teplota (min, max), tlak, vlhkost, popis, ikona, rychlost_vetru, lat, long, vychod, zapad_slunce, cas(dt)
 
 owm = pyowm.OWM("353b379036c2911483cfb9147c1ec9f0")
 
