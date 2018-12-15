@@ -203,7 +203,7 @@ public class WeatherByCity {
     public String toString() {
         String r = "";
         r += "City: " + this.getName() + "\n";
-        r += "Country: " + this.getSysCountry() + "\n";
+        r += "Country: " + this.getSysCountry() + "\n\n";
         r += "Temperature: " + this.getMainTemp() + " °C\n";
         r += "Pressure: " + this.getMainPressure()+ " hPa\n";
         r += "Weather: " + this.getWeatherDescription() + "\n";

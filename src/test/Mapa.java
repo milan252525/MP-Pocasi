@@ -5,12 +5,13 @@
  */
 package test;
 
+import java.awt.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import pocasi.WeatherByCity;
+import java.util.HashMap;
 
-/**
- *
- * @author milan
- */
 public class Mapa extends javax.swing.JFrame {
 
     /**
@@ -19,10 +20,17 @@ public class Mapa extends javax.swing.JFrame {
     public Mapa() {
         
         initComponents();
-        WeatherByCity x = new WeatherByCity("Praha");
-        praha.setText(Double.toString(x.getMainTemp()) + "° C");
-        x = new WeatherByCity("Plzeň");
-        plzen.setText(Double.toString(x.getMainTemp()) + "° C");
+
+        try{
+            HashMap<String, Double> data = getData();
+            praha.setText(Double.toString(data.get("praha")) + " °C");
+            plzen.setText(Double.toString(data.get("plzen")) + " °C");
+            brno.setText(Double.toString(data.get("brno")) + " °C");
+            ostrava.setText(Double.toString(data.get("ostrava")) + " °C");
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     /**
@@ -35,29 +43,34 @@ public class Mapa extends javax.swing.JFrame {
     private void initComponents() {
 
         info = new javax.swing.JFrame();
-        pocasi = new javax.swing.JTextField();
+        pocasi = new javax.swing.JTextArea();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         mapa = new javax.swing.JLabel();
         praha = new javax.swing.JTextPane();
         plzen = new javax.swing.JTextPane();
+        brno = new javax.swing.JTextPane();
+        ostrava = new javax.swing.JTextPane();
 
-        pocasi.setText("jTextField1");
+        info.setBackground(new java.awt.Color(255, 255, 255));
+        info.setForeground(java.awt.Color.white);
+        info.setPreferredSize(new java.awt.Dimension(400, 300));
+
+        pocasi.setEditable(false);
+        pocasi.setColumns(20);
+        pocasi.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        pocasi.setRows(5);
+        pocasi.setMargin(new java.awt.Insets(10, 10, 2, 2));
+        pocasi.setPreferredSize(new java.awt.Dimension(318, 280));
 
         javax.swing.GroupLayout infoLayout = new javax.swing.GroupLayout(info.getContentPane());
         info.getContentPane().setLayout(infoLayout);
         infoLayout.setHorizontalGroup(
             infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoLayout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(pocasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(188, Short.MAX_VALUE))
+            .addComponent(pocasi, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
         );
         infoLayout.setVerticalGroup(
             infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoLayout.createSequentialGroup()
-                .addGap(117, 117, 117)
-                .addComponent(pocasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(161, Short.MAX_VALUE))
+            .addComponent(pocasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,8 +86,8 @@ public class Mapa extends javax.swing.JFrame {
         });
 
         praha.setEditable(false);
-        praha.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        praha.setText("PRAHA");
+        praha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        praha.setText("15°C");
         praha.setOpaque(false);
         praha.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -83,8 +96,8 @@ public class Mapa extends javax.swing.JFrame {
         });
 
         plzen.setEditable(false);
-        plzen.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        plzen.setText("PLZEN");
+        plzen.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        plzen.setText("15°C");
         plzen.setOpaque(false);
         plzen.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -92,79 +105,150 @@ public class Mapa extends javax.swing.JFrame {
             }
         });
 
+        brno.setEditable(false);
+        brno.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        brno.setText("15°C");
+        brno.setOpaque(false);
+        brno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                brnoMouseClicked(evt);
+            }
+        });
+
+        ostrava.setEditable(false);
+        ostrava.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        ostrava.setText("15°C");
+        ostrava.setOpaque(false);
+        ostrava.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ostravaMouseClicked(evt);
+            }
+        });
+
         jLayeredPane1.setLayer(mapa, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(praha, javax.swing.JLayeredPane.POPUP_LAYER);
         jLayeredPane1.setLayer(plzen, javax.swing.JLayeredPane.POPUP_LAYER);
+        jLayeredPane1.setLayer(brno, javax.swing.JLayeredPane.POPUP_LAYER);
+        jLayeredPane1.setLayer(ostrava, javax.swing.JLayeredPane.POPUP_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGap(346, 346, 346)
-                        .addComponent(praha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                        .addGap(197, 197, 197)
-                        .addComponent(plzen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(626, Short.MAX_VALUE))
+                .addGap(184, 184, 184)
+                .addComponent(plzen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(brno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(108, 108, 108))
+            .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                .addGap(331, 331, 331)
+                .addComponent(praha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                .addContainerGap(614, Short.MAX_VALUE)
+                .addComponent(ostrava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(337, 337, 337))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                    .addContainerGap()
                     .addComponent(mapa)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(praha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(plzen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(239, Short.MAX_VALUE)
+                .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                        .addComponent(praha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(plzen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(279, 279, 279))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
+                        .addComponent(brno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(94, 94, 94)
+                        .addComponent(ostrava, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(148, 148, 148))))
             .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jLayeredPane1Layout.createSequentialGroup()
                     .addComponent(mapa)
-                    .addContainerGap()))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-
-        mapa.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 22, Short.MAX_VALUE))
+            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void prahaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prahaMouseClicked
-        pocasi.setText(new WeatherByCity("Praha").toString());
-        info.setVisible(true);
+        showInfo("Praha");
     }//GEN-LAST:event_prahaMouseClicked
 
     private void plzenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plzenMouseClicked
-        // TODO add your handling code here:
+        showInfo("Plzeň");
     }//GEN-LAST:event_plzenMouseClicked
 
     private void mapaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mapaMouseClicked
-        // TODO add your handling code here:
         System.out.println(evt.getX());
         System.out.println(evt.getY());
     }//GEN-LAST:event_mapaMouseClicked
 
+    private void brnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brnoMouseClicked
+        showInfo("Brno");
+    }//GEN-LAST:event_brnoMouseClicked
+
+    private void ostravaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ostravaMouseClicked
+        showInfo("Ostrava");
+    }//GEN-LAST:event_ostravaMouseClicked
+
+    private HashMap getData(){
+        HashMap<String, Double> result = new HashMap<>();
+        MysqlConnect mysqlConnect = new MysqlConnect();
+
+        String sql = "SELECT * FROM `mesta`";
+        try {
+            PreparedStatement statement = mysqlConnect.connect().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            
+            while (rs.next()) {
+                String nazev = rs.getString("nazev");
+                double teplota = rs.getDouble("teplota");
+                result.put(nazev, teplota);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            mysqlConnect.disconnect();
+        }
+        return result;
+    }
+    
+    private void showInfo(String mesto){
+        WeatherByCity x = new WeatherByCity(mesto);
+        String text = "";
+        text += "Teplota: " + x.getMainTemp()+ " °C\n";
+        text += "Vlhkost: " + Math.round(x.getMainHumidity())+ "%\n";
+        text += "Rychlost větru: " + x.getWindSpeed()+ " m/s\n";
+        text += "Tlak: " + x.getMainPressure()+ " hPa\n";
+        text += x.getWeatherDescription()+ "\n";
+        
+        pocasi.setText(text);
+        info.setTitle(mesto);
+        info.setSize(400, 300);
+        info.setVisible(true);
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -199,11 +283,13 @@ public class Mapa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane brno;
     private javax.swing.JFrame info;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLabel mapa;
+    private javax.swing.JTextPane ostrava;
     private javax.swing.JTextPane plzen;
-    private javax.swing.JTextField pocasi;
+    private javax.swing.JTextArea pocasi;
     private javax.swing.JTextPane praha;
     // End of variables declaration//GEN-END:variables
 }
