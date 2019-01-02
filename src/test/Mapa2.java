@@ -536,6 +536,8 @@ public class Mapa2 extends javax.swing.JFrame {
         info.setTitle(i.getName());
         info.setSize(400, 300);
         info.setVisible(true);
+        pozice.setLocation(x-25, y-40);
+        pozice.setVisible(true);
     }//GEN-LAST:event_pozadiMouseClicked
 
     /**
