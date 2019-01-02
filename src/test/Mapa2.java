@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import javax.swing.JPanel;
 import pocasi.WeatherByCity;
+import pocasi.WeatherByCoordinates;
 
 /**
  *
@@ -28,10 +29,11 @@ public class Mapa2 extends javax.swing.JFrame {
         jPanel1.setVisible(false);
         jPanel1.setOpaque(false);
         jPanel1.setBackground(new Color(0,0,0,100));
+        pozice.setVisible(false);
         
         
         
-             try{
+        try{
             HashMap<String, Double> data = getData();
             praha.setText(Double.toString(data.get("praha")) + " °C");
             plzen.setText(Double.toString(data.get("plzen")) + " °C");
@@ -56,6 +58,7 @@ public class Mapa2 extends javax.swing.JFrame {
             System.out.println(e);
         }
              
+        
     }
 
      private HashMap getData(){
@@ -94,8 +97,39 @@ public class Mapa2 extends javax.swing.JFrame {
         info.setTitle(mesto);
         info.setSize(400, 300);
         info.setVisible(true);
+        int[] xy = coordinatesToXY(x.getCoordLat(), x.getCoordLon());
+        pozice.setLocation(xy[0]-25, xy[1]-40);
+        pozice.setVisible(true);
     }
     
+    
+    private double[] getCoordinates(int x, int y){
+        double xdif = 0.00740171605;
+        double ydif = 0.00493237334;
+        
+        int[] zaklad = {408, 87};
+        double[] coord = {50.870592121261794, 14.82327197732559};
+        
+        double lon = coord[1] + (x - zaklad[0]) * xdif;
+        double lat = coord[0] - (y - zaklad[1]) * ydif;
+        
+        double[] result = {lat, lon};
+        return result;
+    }
+    
+    private int[] coordinatesToXY(double lat, double lon){
+        int[] zaklad = {408, 87};
+        double[] coord = {50.870592121261794, 14.82327197732559};
+        double xdif = 0.00740171605;
+        double ydif = 0.00493237334;
+        
+        int x = (int) ((lon - coord[1]) / xdif + zaklad[0]);
+         
+        int y = (int) ((coord[0] - lat) / ydif + zaklad[1]);
+        
+        int[] result = {x, y};
+        return result;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,9 +169,12 @@ public class Mapa2 extends javax.swing.JFrame {
         zlin = new javax.swing.JLabel();
         ostrava = new javax.swing.JLabel();
         hledej = new javax.swing.JLabel();
+        pozice = new javax.swing.JLabel();
         pozadi = new javax.swing.JLabel();
 
+        pocasi.setEditable(false);
         pocasi.setColumns(20);
+        pocasi.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
         pocasi.setRows(5);
         jScrollPane1.setViewportView(pocasi);
 
@@ -154,9 +191,10 @@ public class Mapa2 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 981, 606));
-        setMinimumSize(new java.awt.Dimension(981, 606));
+        setMaximumSize(null);
+        setMinimumSize(null);
         setName("Pocasi"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(981, 606));
+        setPreferredSize(new java.awt.Dimension(1000, 650));
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
@@ -184,16 +222,16 @@ public class Mapa2 extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(69, 69, 69)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -232,7 +270,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(plzen);
-        plzen.setBounds(160, 320, 99, 16);
+        plzen.setBounds(200, 290, 50, 16);
 
         karlovy_vary.setText("Karlovy Vary");
         karlovy_vary.setMaximumSize(new java.awt.Dimension(99, 16));
@@ -244,7 +282,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(karlovy_vary);
-        karlovy_vary.setBounds(100, 220, 90, 16);
+        karlovy_vary.setBounds(110, 210, 90, 16);
 
         usti_nad_labem.setText("Usti nad Labem");
         usti_nad_labem.setMaximumSize(new java.awt.Dimension(99, 16));
@@ -256,7 +294,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(usti_nad_labem);
-        usti_nad_labem.setBounds(260, 150, 99, 16);
+        usti_nad_labem.setBounds(260, 140, 99, 16);
 
         liberec.setText("Liberec");
         liberec.setMaximumSize(new java.awt.Dimension(99, 16));
@@ -280,7 +318,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(hradec_kralove);
-        hradec_kralove.setBounds(530, 190, 99, 16);
+        hradec_kralove.setBounds(520, 200, 99, 16);
 
         pardubice.setText("Pardubice");
         pardubice.setMaximumSize(new java.awt.Dimension(99, 16));
@@ -313,7 +351,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ceske_budejovice);
-        ceske_budejovice.setBounds(290, 440, 99, 16);
+        ceske_budejovice.setBounds(310, 460, 99, 16);
 
         brno.setText("Brno");
         brno.setMaximumSize(new java.awt.Dimension(99, 16));
@@ -349,7 +387,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(zlin);
-        zlin.setBounds(790, 420, 99, 16);
+        zlin.setBounds(780, 420, 99, 16);
 
         ostrava.setText("Ostrava");
         ostrava.setMaximumSize(new java.awt.Dimension(99, 16));
@@ -361,7 +399,7 @@ public class Mapa2 extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ostrava);
-        ostrava.setBounds(820, 300, 99, 16);
+        ostrava.setBounds(830, 290, 99, 16);
 
         hledej.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
         hledej.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -374,8 +412,25 @@ public class Mapa2 extends javax.swing.JFrame {
         getContentPane().add(hledej);
         hledej.setBounds(0, 0, 50, 50);
 
+        pozice.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pozice.setForeground(new java.awt.Color(255, 0, 0));
+        pozice.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pozice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/test/lokace30.png"))); // NOI18N
+        pozice.setToolTipText("");
+        pozice.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pozice.setMaximumSize(new java.awt.Dimension(30, 30));
+        pozice.setMinimumSize(new java.awt.Dimension(30, 30));
+        pozice.setPreferredSize(new java.awt.Dimension(30, 30));
+        getContentPane().add(pozice);
+        pozice.setBounds(370, 360, 50, 50);
+
         pozadi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/test/mapa.png"))); // NOI18N
         pozadi.setText("jLabel1");
+        pozadi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pozadiMouseClicked(evt);
+            }
+        });
         getContentPane().add(pozadi);
         pozadi.setBounds(0, 0, 980, 610);
 
@@ -464,6 +519,25 @@ public class Mapa2 extends javax.swing.JFrame {
         showInfo(jTextField1.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void pozadiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pozadiMouseClicked
+        int x = evt.getX();
+        int y = evt.getY();
+        double[] coord = getCoordinates(x, y);
+      
+        WeatherByCoordinates i = new WeatherByCoordinates(coord[0], coord[1]);
+        String text = "";
+        text += "Teplota: " + i.getMainTemp()+ " °C\n";
+        text += "Vlhkost: " + Math.round(i.getMainHumidity())+ "%\n";
+        text += "Rychlost větru: " + i.getWindSpeed()+ " m/s\n";
+        text += "Tlak: " + i.getMainPressure()+ " hPa\n";
+        text += i.getWeatherDescription()+ "\n";
+        
+        pocasi.setText(text);
+        info.setTitle(i.getName());
+        info.setSize(400, 300);
+        info.setVisible(true);
+    }//GEN-LAST:event_pozadiMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -519,6 +593,7 @@ public class Mapa2 extends javax.swing.JFrame {
     private javax.swing.JLabel plzen;
     private javax.swing.JTextArea pocasi;
     private javax.swing.JLabel pozadi;
+    private javax.swing.JLabel pozice;
     private javax.swing.JLabel praha;
     private javax.swing.JLabel usti_nad_labem;
     private javax.swing.JLabel zlin;
