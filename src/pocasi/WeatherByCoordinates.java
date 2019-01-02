@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WeatherByCity {
+public class WeatherByCoordinates {
     private final String API_KEY = "353b379036c2911483cfb9147c1ec9f0";
     
     private String response_json, url;
@@ -23,10 +23,10 @@ public class WeatherByCity {
     private String main, description, icon, base, country, name;
     private long id, dt, sunrise, sunset;
 
-    public WeatherByCity(String city){
+    public WeatherByCoordinates(double lat, double lon){
         try{
             //vytvoreni url
-            URL request_url = new URL(String.format("http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&APPID=%s&lang=cz", city, API_KEY));
+            URL request_url = new URL(String.format("http://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&units=metric&APPID=%s&lang=cz", lat, lon, API_KEY));
             //otevreni spojeni
             HttpURLConnection connection = (HttpURLConnection) request_url.openConnection();
             //kod odpovedi
