@@ -214,9 +214,7 @@ public class Pocasi extends javax.swing.JFrame {
         pozadi = new javax.swing.JLabel();
 
         info.setBounds(new java.awt.Rectangle(0, 0, 560, 420));
-        info.setMaximumSize(new java.awt.Dimension(560, 420));
         info.setMinimumSize(new java.awt.Dimension(560, 420));
-        info.setPreferredSize(new java.awt.Dimension(560, 420));
         info.getContentPane().setLayout(null);
 
         obrazek.setText("obrazek");
