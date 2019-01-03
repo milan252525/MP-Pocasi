@@ -31,6 +31,9 @@ public class Pocasi extends javax.swing.JFrame {
     Handler handler;
     IkonyPocasi ikony;
     
+    /**
+     *Hlavni okno aplikace
+     */
     public Pocasi() {
         initComponents();
         handler = new Handler(this);
@@ -439,9 +442,6 @@ public class Pocasi extends javax.swing.JFrame {
                                 .addGap(29, 29, 29)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(69, 69, 69)
-                                .addComponent(jButton1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 39, Short.MAX_VALUE))
@@ -449,16 +449,20 @@ public class Pocasi extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(chyba, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(67, 67, 67)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(53, 53, 53)
+                .addGap(47, 47, 47)
                 .addComponent(chyba, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 354, Short.MAX_VALUE))
         );
@@ -466,6 +470,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 230, 610);
 
+        praha.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         praha.setText("Praha");
         praha.setMaximumSize(new java.awt.Dimension(99, 16));
         praha.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -478,6 +483,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(praha);
         praha.setBounds(340, 240, 99, 16);
 
+        plzen.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         plzen.setText("Plzen");
         plzen.setMaximumSize(new java.awt.Dimension(99, 16));
         plzen.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -488,8 +494,9 @@ public class Pocasi extends javax.swing.JFrame {
             }
         });
         getContentPane().add(plzen);
-        plzen.setBounds(200, 290, 50, 16);
+        plzen.setBounds(200, 290, 70, 40);
 
+        karlovy_vary.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         karlovy_vary.setText("Karlovy Vary");
         karlovy_vary.setMaximumSize(new java.awt.Dimension(99, 16));
         karlovy_vary.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -502,6 +509,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(karlovy_vary);
         karlovy_vary.setBounds(110, 210, 90, 16);
 
+        usti_nad_labem.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         usti_nad_labem.setText("Usti nad Labem");
         usti_nad_labem.setMaximumSize(new java.awt.Dimension(99, 16));
         usti_nad_labem.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -514,6 +522,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(usti_nad_labem);
         usti_nad_labem.setBounds(260, 140, 99, 16);
 
+        liberec.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         liberec.setText("Liberec");
         liberec.setMaximumSize(new java.awt.Dimension(99, 16));
         liberec.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -526,6 +535,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(liberec);
         liberec.setBounds(410, 110, 99, 16);
 
+        hradec_kralove.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         hradec_kralove.setText("Hradec Kralove");
         hradec_kralove.setMaximumSize(new java.awt.Dimension(99, 16));
         hradec_kralove.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -536,8 +546,9 @@ public class Pocasi extends javax.swing.JFrame {
             }
         });
         getContentPane().add(hradec_kralove);
-        hradec_kralove.setBounds(520, 200, 99, 16);
+        hradec_kralove.setBounds(520, 190, 99, 16);
 
+        pardubice.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         pardubice.setText("Pardubice");
         pardubice.setMaximumSize(new java.awt.Dimension(99, 16));
         pardubice.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -548,8 +559,9 @@ public class Pocasi extends javax.swing.JFrame {
             }
         });
         getContentPane().add(pardubice);
-        pardubice.setBounds(560, 280, 99, 16);
+        pardubice.setBounds(520, 260, 99, 16);
 
+        jihlava.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jihlava.setText("Jihlava");
         jihlava.setMaximumSize(new java.awt.Dimension(99, 16));
         jihlava.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -562,6 +574,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(jihlava);
         jihlava.setBounds(500, 380, 99, 16);
 
+        ceske_budejovice.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         ceske_budejovice.setText("Ceske Budejovice");
         ceske_budejovice.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -569,8 +582,9 @@ public class Pocasi extends javax.swing.JFrame {
             }
         });
         getContentPane().add(ceske_budejovice);
-        ceske_budejovice.setBounds(310, 460, 99, 16);
+        ceske_budejovice.setBounds(310, 450, 100, 30);
 
+        brno.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         brno.setText("Brno");
         brno.setMaximumSize(new java.awt.Dimension(99, 16));
         brno.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -583,6 +597,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(brno);
         brno.setBounds(640, 420, 99, 16);
 
+        olomouc.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         olomouc.setText("Olomouc");
         olomouc.setMaximumSize(new java.awt.Dimension(99, 16));
         olomouc.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -595,6 +610,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(olomouc);
         olomouc.setBounds(720, 340, 99, 16);
 
+        zlin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         zlin.setText("Zlin");
         zlin.setMaximumSize(new java.awt.Dimension(99, 16));
         zlin.setMinimumSize(new java.awt.Dimension(99, 16));
@@ -607,6 +623,7 @@ public class Pocasi extends javax.swing.JFrame {
         getContentPane().add(zlin);
         zlin.setBounds(780, 420, 99, 16);
 
+        ostrava.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         ostrava.setText("Ostrava");
         ostrava.setMaximumSize(new java.awt.Dimension(99, 16));
         ostrava.setMinimumSize(new java.awt.Dimension(99, 16));
