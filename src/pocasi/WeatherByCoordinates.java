@@ -180,11 +180,11 @@ public class WeatherByCoordinates {
     }
 
     public long getSysSunrise() {
-        return this.sunrise;
+        return this.sunrise * 1000;
     }
 
     public long getSysSunset() {
-        return this.sunset;
+        return this.sunset * 1000;
     }
 
     public long getId() {

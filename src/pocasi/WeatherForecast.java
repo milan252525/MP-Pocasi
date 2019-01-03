@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -24,7 +25,7 @@ public class WeatherForecast {
     public WeatherForecast(String city){
         try{
             //vytvoreni url
-            URL request_url = new URL(String.format("http://api.openweathermap.org/data/2.5/forecast?%s&units=metric&APPID=%s", city, API_KEY));
+            URL request_url = new URL(String.format("http://api.openweathermap.org/data/2.5/forecast?%s&units=metric&APPID=%s&lang=cz", city, API_KEY));
             //otevreni spojeni
             HttpURLConnection connection = (HttpURLConnection) request_url.openConnection();
             //kod odpovedi
@@ -61,13 +62,12 @@ public class WeatherForecast {
                 JSONObject w = weather.getJSONObject(0);
                 double tepl = main.getDouble("temp");
                 String popis = w.getString("description");
-                int date = one_day.getInt("dt");
-                java.util.Date time = new java.util.Date((long)date*1000);
+                String time = new SimpleDateFormat("dd. MM. HH:mm").format((long)one_day.getInt("dt") * 1000);
                 String icon = w.getString("icon");
 
-                if(i % 8 == 0){ 
+                if(i % 4 == 0){ 
                     this.array[x][0] = Double.toString(tepl);
-                    this.array[x][1] = Double.toString(time.getHours());
+                    this.array[x][1] = time;
                     this.array[x][2] = popis;
                     this.array[x][3] = icon;
                     //System.out.println(this.array[x][0] + " " + this.array[x][1]);

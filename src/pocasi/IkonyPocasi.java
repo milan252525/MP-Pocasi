@@ -3,8 +3,7 @@ package pocasi;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
@@ -15,8 +14,8 @@ public class IkonyPocasi {
    private BufferedImage img;
    private ImageIcon icon;
    private Handler handler;
-   private final int sirkaVelkychIkon = 200;
-   private final int vyskaVelkychIkon = 200;
+   private final int sirkaVelkychIkon = 100;
+   private final int vyskaVelkychIkon = 100;
    private final int sirkaMalychIkon = 50;
    private final int vyskaMalychIkon = 50; 
    private ImageIcon[] ikonyForecast;
@@ -63,7 +62,7 @@ public class IkonyPocasi {
     
     public ImageIcon getIkonyForecast(int x) {
                     
-        ikonyForecast = new ImageIcon[3];
+        ikonyForecast = new ImageIcon[6];
         for (int i = 0; i < ikonyForecast.length; i++) {
         try {
             stream = getClass().getClassLoader().getResourceAsStream("icons/"+ handler.getWeatherForecastIcon(i) +".png");

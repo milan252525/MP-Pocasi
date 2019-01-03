@@ -10,6 +10,8 @@ import java.awt.Graphics;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,14 +39,14 @@ public class Pocasi extends javax.swing.JFrame {
         jPanel1.setBackground(new Color(0,0,0,100));
         pozice.setVisible(false);
         ikony = new IkonyPocasi(handler);
-        
-        
-        
+        chyba.setVisible(false);
+        chyba.setOpaque(false);
+        chyba.setBackground(new Color(0,0,0,0));
+
         try{
             HashMap<String, Double> data = getData();
             praha.setText(Double.toString(data.get("praha")) + " °C");
             plzen.setText(Double.toString(data.get("plzen")) + " °C");
-            //
             karlovy_vary.setText(Double.toString(data.get("karlovy vary")) + " °C");
             usti_nad_labem.setText(Double.toString(data.get("usti nad labem")) + " °C");
             liberec.setText(Double.toString(data.get("liberec")) + " °C");
@@ -52,12 +54,9 @@ public class Pocasi extends javax.swing.JFrame {
             pardubice.setText(Double.toString(data.get("pardubice")) + " °C");
             jihlava.setText(Double.toString(data.get("jihlava")) + " °C");
             ceske_budejovice.setText(Double.toString(data.get("ceske budejovice")) + " °C");
-            
             brno.setText(Double.toString(data.get("brno")) + " °C");
-            //
             olomouc.setText(Double.toString(data.get("olomouc")) + " °C");
             zlin.setText(Double.toString(data.get("zlin")) + " °C");
-            
             ostrava.setText(Double.toString(data.get("ostrava")) + " °C");
             
         }
@@ -76,13 +75,11 @@ public class Pocasi extends javax.swing.JFrame {
         try {
             PreparedStatement statement = mysqlConnect.connect().prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
-            
             while (rs.next()) {
                 String nazev = rs.getString("nazev");
-                double teplota = rs.getDouble("teplota");
-                result.put(nazev, teplota);
+                double tepl = rs.getDouble("teplota");
+                result.put(nazev, tepl);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -92,25 +89,38 @@ public class Pocasi extends javax.swing.JFrame {
     }
     
     private void showInfo(String mesto){
-        weatherForecast = new WeatherForecast("q=" + mesto);       
-        weatherByCity = new WeatherByCity(mesto);
-        String text = "";
-        text += "Teplota: " + weatherByCity.getMainTemp()+ " °C\n";
-        text += "Vlhkost: " + Math.round(weatherByCity.getMainHumidity())+ "%\n";
-        text += "Rychlost větru: " + weatherByCity.getWindSpeed()+ " m/s\n";
-        text += "Tlak: " + weatherByCity.getMainPressure()+ " hPa\n";
-        text += weatherByCity.getWeatherDescription()+ "\n";
+        chyba.setVisible(false);
+        try{
+             weatherByCity = new WeatherByCity(mesto);
+             weatherForecast = new WeatherForecast("q=" + mesto); 
+        }
+        catch (NullPointerException e){
+            chyba.setVisible(true);
+            return;
+        }
+
+        String detail = "";
+        detail += "Vlhkost:\t\t" + Math.round(weatherByCity.getMainHumidity())+ "%\n";
+        detail += "Tlak:\t\t" + weatherByCity.getMainPressure()+ " hPa\n";
+        detail += "Rychlost větru:\t" + weatherByCity.getWindSpeed()+ " m/s\n";
+        detail += "Oblačnost:\t\t" + Math.round(weatherByCity.getCloudsAll())+ "%\n";
+        detail += "\nVýchod slunce:\t" + new SimpleDateFormat("HH:mm").format(weatherByCity.getSysSunrise())+ "\n";
+        detail += "Západ slunce:\t\t" + new SimpleDateFormat("HH:mm").format(weatherByCity.getSysSunset())+ "\n";
         
         
-        pocasi.setText(text);
+        nazevMesta.setText(mesto);
+        cas.setText(new SimpleDateFormat("dd.MM. HH:mm").format(Calendar.getInstance().getTime()));
+        teplota.setText(weatherByCity.getMainTemp() + " °C");
+        dalsiInfo.setText(detail);
+
         info.setTitle(mesto);
-        info.setSize(400, 300);
+        info.setSize(488, 515);
         info.setVisible(true);
         int[] xy = coordinatesToXY(weatherByCity.getCoordLat(), weatherByCity.getCoordLon());
         pozice.setLocation(xy[0]-25, xy[1]-40);
         pozice.setVisible(true);
         obrazek.setIcon(ikony.getIconWeatherByCity());
-        wtf();
+        pridatIkony();
     }
     
     
@@ -142,29 +152,38 @@ public class Pocasi extends javax.swing.JFrame {
         return result;
     }
     
-    private void wtf(){
-                jLabel1.setIcon(ikony.getIkonyForecast(0));
-                jLabel1.setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(0, 0)+ 
-                                                                            "<br/>" + "Time: "+ weatherForecast.getArrayValue(0, 1)+
-                                                                            "<br/>" +  weatherForecast.getArrayValue(0, 2) + "</html>");
-                jLabel1.setHorizontalTextPosition(JLabel.CENTER);
-                jLabel1.setVerticalTextPosition(JLabel.BOTTOM);
-                
-                jLabel2.setIcon(ikony.getIkonyForecast(1));
-                jLabel2.setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(1, 0)+ 
-                                                                            "<br/>" + "Time: "+weatherForecast.getArrayValue(1, 1)+ 
-                                                                            "<br/>" + weatherForecast.getArrayValue(1, 2)+ "</html>");
-                jLabel2.setHorizontalTextPosition(JLabel.CENTER);
-                jLabel2.setVerticalTextPosition(JLabel.BOTTOM);
-                
-                jLabel3.setIcon(ikony.getIkonyForecast(2));
-                jLabel3.setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(2, 0)+ 
-                                                                            "<br/>" + "Time: "+weatherForecast.getArrayValue(2, 1)+ 
-                                                                            "<br/>" + weatherForecast.getArrayValue(2, 2)+ "</html>");
-                jLabel3.setHorizontalTextPosition(JLabel.CENTER);
-                jLabel3.setVerticalTextPosition(JLabel.BOTTOM);
-             
+    private void pridatIkony(){
+        String vzor = "<html><div style='text-align: center;'>%s °C<br/>%s<br/>%s</html>";
 
+        jLabel1.setIcon(ikony.getIkonyForecast(0));
+        jLabel1.setText(String.format(vzor, weatherForecast.getArrayValue(0, 0), weatherForecast.getArrayValue(0, 1), weatherForecast.getArrayValue(0, 2)));
+        jLabel1.setHorizontalTextPosition(JLabel.CENTER);
+        jLabel1.setVerticalTextPosition(JLabel.BOTTOM);
+        
+        jLabel4.setIcon(ikony.getIkonyForecast(1));
+        jLabel4.setText(String.format(vzor, weatherForecast.getArrayValue(1, 0), weatherForecast.getArrayValue(1, 1), weatherForecast.getArrayValue(1, 2)));
+        jLabel4.setHorizontalTextPosition(JLabel.CENTER);
+        jLabel4.setVerticalTextPosition(JLabel.BOTTOM);
+        
+        jLabel2.setIcon(ikony.getIkonyForecast(2));
+        jLabel2.setText(String.format(vzor, weatherForecast.getArrayValue(2, 0), weatherForecast.getArrayValue(2, 1), weatherForecast.getArrayValue(2, 2)));
+        jLabel2.setHorizontalTextPosition(JLabel.CENTER);
+        jLabel2.setVerticalTextPosition(JLabel.BOTTOM);
+        
+        jLabel5.setIcon(ikony.getIkonyForecast(3));
+        jLabel5.setText(String.format(vzor, weatherForecast.getArrayValue(3, 0), weatherForecast.getArrayValue(3, 1), weatherForecast.getArrayValue(3, 2)));
+        jLabel5.setHorizontalTextPosition(JLabel.CENTER);
+        jLabel5.setVerticalTextPosition(JLabel.BOTTOM);
+        
+        jLabel3.setIcon(ikony.getIkonyForecast(4));
+        jLabel3.setText(String.format(vzor, weatherForecast.getArrayValue(4, 0), weatherForecast.getArrayValue(4, 1), weatherForecast.getArrayValue(4, 2)));
+        jLabel3.setHorizontalTextPosition(JLabel.CENTER);
+        jLabel3.setVerticalTextPosition(JLabel.BOTTOM);
+        
+        jLabel6.setIcon(ikony.getIkonyForecast(5));
+        jLabel6.setText(String.format(vzor, weatherForecast.getArrayValue(5, 0), weatherForecast.getArrayValue(5, 1), weatherForecast.getArrayValue(5, 2)));
+        jLabel6.setHorizontalTextPosition(JLabel.CENTER);
+        jLabel6.setVerticalTextPosition(JLabel.BOTTOM);
     }
     
     /**
@@ -177,13 +196,19 @@ public class Pocasi extends javax.swing.JFrame {
     private void initComponents() {
 
         info = new javax.swing.JDialog();
+        jPanel3 = new javax.swing.JPanel();
+        nazevMesta = new javax.swing.JLabel();
+        cas = new javax.swing.JLabel();
+        teplota = new javax.swing.JLabel();
+        dalsiInfo = new javax.swing.JTextArea();
         obrazek = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        pocasi = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new JPanel(null){
             @Override
             protected void paintComponent(Graphics g)
@@ -196,6 +221,7 @@ public class Pocasi extends javax.swing.JFrame {
         nehledej = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        chyba = new javax.swing.JTextArea();
         praha = new javax.swing.JLabel();
         plzen = new javax.swing.JLabel();
         karlovy_vary = new javax.swing.JLabel();
@@ -213,26 +239,38 @@ public class Pocasi extends javax.swing.JFrame {
         pozice = new javax.swing.JLabel();
         pozadi = new javax.swing.JLabel();
 
+        info.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         info.setBounds(new java.awt.Rectangle(0, 0, 560, 420));
-        info.setMinimumSize(new java.awt.Dimension(560, 420));
+        info.setMaximumSize(new java.awt.Dimension(488, 515));
+        info.setMinimumSize(new java.awt.Dimension(488, 515));
+        info.setPreferredSize(new java.awt.Dimension(488, 515));
+        info.setResizable(false);
         info.getContentPane().setLayout(null);
 
-        obrazek.setText("obrazek");
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        nazevMesta.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        nazevMesta.setText("Nazev mesta");
+
+        cas.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cas.setForeground(new java.awt.Color(102, 102, 102));
+        cas.setText("32. 13. 3002");
+
+        teplota.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        teplota.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        teplota.setText("5°C");
+
+        dalsiInfo.setEditable(false);
+        dalsiInfo.setColumns(20);
+        dalsiInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dalsiInfo.setRows(5);
+        dalsiInfo.setBorder(null);
+
         obrazek.setMaximumSize(new java.awt.Dimension(200, 200));
         obrazek.setMinimumSize(new java.awt.Dimension(200, 200));
         obrazek.setPreferredSize(new java.awt.Dimension(200, 200));
-        info.getContentPane().add(obrazek);
-        obrazek.setBounds(0, 0, 200, 200);
 
-        pocasi.setEditable(false);
-        pocasi.setColumns(20);
-        pocasi.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
-        pocasi.setRows(5);
-        pocasi.setPreferredSize(new java.awt.Dimension(280, 200));
-        jScrollPane1.setViewportView(pocasi);
-
-        info.getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(200, 0, 350, 200);
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setText("jLabel1");
         jLabel1.setMaximumSize(new java.awt.Dimension(120, 120));
@@ -249,30 +287,101 @@ public class Pocasi extends javax.swing.JFrame {
         jLabel3.setMinimumSize(new java.awt.Dimension(120, 120));
         jLabel3.setPreferredSize(new java.awt.Dimension(120, 120));
 
+        jLabel4.setText("jLabel4");
+        jLabel4.setMaximumSize(new java.awt.Dimension(120, 120));
+        jLabel4.setMinimumSize(new java.awt.Dimension(120, 120));
+        jLabel4.setPreferredSize(new java.awt.Dimension(120, 120));
+
+        jLabel5.setText("jLabel5");
+        jLabel5.setMaximumSize(new java.awt.Dimension(120, 120));
+        jLabel5.setMinimumSize(new java.awt.Dimension(120, 120));
+        jLabel5.setPreferredSize(new java.awt.Dimension(120, 120));
+
+        jLabel6.setText("jLabel6");
+        jLabel6.setMaximumSize(new java.awt.Dimension(120, 120));
+        jLabel6.setMinimumSize(new java.awt.Dimension(120, 120));
+        jLabel6.setPreferredSize(new java.awt.Dimension(120, 120));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(58, 58, 58)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        info.getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 200, 540, 180);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cas)
+                    .addComponent(dalsiInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nazevMesta, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(obrazek, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addComponent(teplota, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(nazevMesta, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(cas)
+                        .addGap(18, 18, 18)
+                        .addComponent(dalsiInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(obrazek, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(teplota, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        info.getContentPane().add(jPanel3);
+        jPanel3.setBounds(0, 0, 490, 510);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 980, 610));
@@ -304,6 +413,20 @@ public class Pocasi extends javax.swing.JFrame {
             }
         });
 
+        chyba.setEditable(false);
+        chyba.setColumns(20);
+        chyba.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        chyba.setForeground(new java.awt.Color(255, 255, 255));
+        chyba.setLineWrap(true);
+        chyba.setRows(5);
+        chyba.setText(" Nelze najít hledanou obec!\n\n Zkontrolujte zda je název \n správný!");
+        chyba.setAlignmentX(4.0F);
+        chyba.setAlignmentY(4.0F);
+        chyba.setBorder(null);
+        chyba.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        chyba.setOpaque(false);
+        chyba.setSelectionColor(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -311,15 +434,21 @@ public class Pocasi extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(jButton1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 39, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(chyba, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +458,9 @@ public class Pocasi extends javax.swing.JFrame {
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(0, 482, Short.MAX_VALUE))
+                .addGap(53, 53, 53)
+                .addComponent(chyba, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 354, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -596,7 +727,7 @@ public class Pocasi extends javax.swing.JFrame {
 
     private void zlinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zlinMouseClicked
         // TODO add your handling code here:
-        showInfo("Zlin");
+        showInfo("Zlín");
     }//GEN-LAST:event_zlinMouseClicked
 
     private void ostravaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ostravaMouseClicked
@@ -613,25 +744,57 @@ public class Pocasi extends javax.swing.JFrame {
         int x = evt.getX();
         int y = evt.getY();
         double[] coord = getCoordinates(x, y);
+        
+        try{
+             weatherByCoordinates = new WeatherByCoordinates(coord[0], coord[1]);
+             weatherForecast = new WeatherForecast("lat=" + coord[0] + "&lon=" + coord[1]); 
+        }
+        catch (NullPointerException e){
+            chyba.setVisible(true);
+            return;
+        }
       
-        weatherByCoordinates = new WeatherByCoordinates(coord[0], coord[1]);
-        String text = "";
-        text += "Teplota: " + weatherByCoordinates.getMainTemp()+ " °C\n";
-        text += "Vlhkost: " + Math.round(weatherByCoordinates.getMainHumidity())+ "%\n";
-        text += "Rychlost větru: " + weatherByCoordinates.getWindSpeed()+ " m/s\n";
-        text += "Tlak: " + weatherByCoordinates.getMainPressure()+ " hPa\n";
-        text += weatherByCoordinates.getWeatherDescription()+ "\n";
+//        weatherByCoordinates = new WeatherByCoordinates(coord[0], coord[1]);
+//        String text = "";
+//        text += "Teplota: " + weatherByCoordinates.getMainTemp()+ " °C\n";
+//        text += "Vlhkost: " + Math.round(weatherByCoordinates.getMainHumidity())+ "%\n";
+//        text += "Rychlost větru: " + weatherByCoordinates.getWindSpeed()+ " m/s\n";
+//        text += "Tlak: " + weatherByCoordinates.getMainPressure()+ " hPa\n";
+//        text += weatherByCoordinates.getWeatherDescription()+ "\n";
+//        
+//        weatherForecast = new WeatherForecast("lat=" + coord[0] + "&lon=" + coord[1]); 
+//        
+//        
+//        info.setTitle(weatherByCoordinates.getName());
+//        info.setSize(400, 300);
+//        info.setVisible(true);
+//        pozice.setLocation(x-25, y-40);
+//        pozice.setVisible(true);
+//        obrazek.setIcon(ikony.getIconWeatherByCoordinates());
+//        pridatIkony();
+//        
+        String detail = "";
+        detail += "Vlhkost:\t\t" + Math.round(weatherByCoordinates.getMainHumidity())+ "%\n";
+        detail += "Tlak:\t\t" + weatherByCoordinates.getMainPressure()+ " hPa\n";
+        detail += "Rychlost větru:\t" + weatherByCoordinates.getWindSpeed()+ " m/s\n";
+        detail += "Oblačnost:\t\t" + Math.round(weatherByCoordinates.getCloudsAll())+ "%\n";
+        detail += "\nVýchod slunce:\t" + new SimpleDateFormat("HH:mm").format(weatherByCoordinates.getSysSunrise())+ "\n";
+        detail += "Západ slunce:\t\t" + new SimpleDateFormat("HH:mm").format(weatherByCoordinates.getSysSunset())+ "\n";
         
-        weatherForecast = new WeatherForecast("lat=" + coord[0] + "&lon=" + coord[1]); 
-        
-        pocasi.setText(text);
+
+        nazevMesta.setText(weatherByCoordinates.getName());
+        cas.setText(new SimpleDateFormat("dd.MM. HH:mm").format(Calendar.getInstance().getTime()));
+        teplota.setText(weatherByCoordinates.getMainTemp() + " °C");
+        dalsiInfo.setText(detail);
+
         info.setTitle(weatherByCoordinates.getName());
-        info.setSize(400, 300);
+        info.setSize(488, 515);
         info.setVisible(true);
-        pozice.setLocation(x-25, y-40);
+        int[] xy = coordinatesToXY(weatherByCoordinates.getCoordLat(), weatherByCoordinates.getCoordLon());
+        pozice.setLocation(xy[0]-25, xy[1]-40);
         pozice.setVisible(true);
         obrazek.setIcon(ikony.getIconWeatherByCoordinates());
-        wtf();
+        pridatIkony();
     }//GEN-LAST:event_pozadiMouseClicked
 
     /**
@@ -666,6 +829,7 @@ public class Pocasi extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Pocasi().setVisible(true);
             }
@@ -688,7 +852,10 @@ public class Pocasi extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel brno;
+    private javax.swing.JLabel cas;
     private javax.swing.JLabel ceske_budejovice;
+    private javax.swing.JTextArea chyba;
+    private javax.swing.JTextArea dalsiInfo;
     private javax.swing.JLabel hledej;
     private javax.swing.JLabel hradec_kralove;
     private javax.swing.JDialog info;
@@ -696,23 +863,27 @@ public class Pocasi extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel jihlava;
     private javax.swing.JLabel karlovy_vary;
     private javax.swing.JLabel liberec;
+    private javax.swing.JLabel nazevMesta;
     private javax.swing.JLabel nehledej;
     private javax.swing.JLabel obrazek;
     private javax.swing.JLabel olomouc;
     private javax.swing.JLabel ostrava;
     private javax.swing.JLabel pardubice;
     private javax.swing.JLabel plzen;
-    private javax.swing.JTextArea pocasi;
     private javax.swing.JLabel pozadi;
     private javax.swing.JLabel pozice;
     private javax.swing.JLabel praha;
+    private javax.swing.JLabel teplota;
     private javax.swing.JLabel usti_nad_labem;
     private javax.swing.JLabel zlin;
     // End of variables declaration//GEN-END:variables
