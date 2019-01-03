@@ -1,5 +1,5 @@
 
-package pocasi;
+package NaPamatku;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -24,11 +24,9 @@ public class IkonyPocasi {
 
     public IkonyPocasi (Handler handler){
         this.handler = handler;
-  
-    }
-    
-    public ImageIcon getIconWeatherByCity(){
-         try {
+        
+         
+        try {
              stream = getClass().getClassLoader().getResourceAsStream("icons/"+ handler.getWeatherByCityIcon() +".png");
              img = ImageIO.read(stream);
              Image image = img.getScaledInstance(sirkaVelkychIkon, vyskaVelkychIkon,Image.SCALE_SMOOTH);
@@ -39,30 +37,7 @@ public class IkonyPocasi {
         } catch (IOException ex) {
             System.out.println("NO IMAGE");
         }
-         
-          return icon;
-    }
-    
-    
-
-    public ImageIcon getIconWeatherByCoordinates() {
-            try {
-             stream = getClass().getClassLoader().getResourceAsStream("icons/"+ handler.getWeatherByCoordinatesIcon() +".png");
-             img = ImageIO.read(stream);
-             Image image = img.getScaledInstance(sirkaVelkychIkon, vyskaVelkychIkon,Image.SCALE_SMOOTH);
-             icon = new ImageIcon(image);
             
-           
-           
-        } catch (IOException ex) {
-            System.out.println("NO IMAGE");
-        }
-        
-        return icon;
-    }
-    
-    public ImageIcon getIkonyForecast(int x) {
-                    
         ikonyForecast = new ImageIcon[3];
         for (int i = 0; i < ikonyForecast.length; i++) {
         try {
@@ -74,11 +49,11 @@ public class IkonyPocasi {
             System.out.println("NO IMAGE");
         }
         } 
-        
-        
-        return ikonyForecast[x];
     }
-    
+
+    public ImageIcon getIcon() {
+        return icon;
+    }
     
     public int getSirkaVelkychIkon() {
         return sirkaVelkychIkon;
@@ -96,5 +71,8 @@ public class IkonyPocasi {
         return vyskaMalychIkon;
     }
 
+    public ImageIcon getIkonyForecast(int x) {
+        return ikonyForecast[x];
+    }
     
 }

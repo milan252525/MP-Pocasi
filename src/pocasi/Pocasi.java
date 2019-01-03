@@ -7,57 +7,166 @@ package pocasi;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
-import javax.swing.JDialog;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.MatteBorder;
 
 /**
  *
- * @author bohou
+ * @author iwant
  */
 public class Pocasi extends javax.swing.JFrame {
 
-    public boolean AktivHodiny;
-    public boolean AktivHWeatherByCity;
-    public boolean AktivWeatherForecast;
-    public boolean AktivSearch;
-    private boolean firstTime = true;
-    private PanelBarva panelBarva;
-    private PanelTime panelTime;
-    private PanelSearch panelSearch;
-    private PanelWBC panelWBC;
-    private PanelWF panelWF;
-    private Handler handler;
-
-    
     /**
-     * Creates new form Manager
+     * Creates new form Mapa2
      */
+    WeatherByCity weatherByCity;
+    WeatherForecast weatherForecast;
+    WeatherByCoordinates weatherByCoordinates;
+    Handler handler;
+    IkonyPocasi ikony;
+    
     public Pocasi() {
         initComponents();
-        setLocationRelativeTo(null);
-        panelBarva = new PanelBarva();
-        panelBarva.setBounds(100,420,180, 50);
-        panelBarva.setOpaque(false);
-        panelBarva.setBorder(new MatteBorder(1, 1, 1, 1, Color.BLACK));
-        panelBarva.setVisible(true);      
-        add(panelBarva);
-        
-        jDialog1.setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds()); 
-        jDialog1.setUndecorated(true);
-        jDialog1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        jDialog1.setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
         handler = new Handler(this);
-        panelTime = new PanelTime(handler);
-        panelSearch = new PanelSearch(handler);
-        panelWBC = new PanelWBC(handler);
-        panelWF = new PanelWF(handler);
-        panelTime.start();
+        jPanel1.setVisible(false);
+        jPanel1.setOpaque(false);
+        jPanel1.setBackground(new Color(0,0,0,100));
+        pozice.setVisible(false);
+        ikony = new IkonyPocasi(handler);
         
-     
+        
+        
+        try{
+            HashMap<String, Double> data = getData();
+            praha.setText(Double.toString(data.get("praha")) + " °C");
+            plzen.setText(Double.toString(data.get("plzen")) + " °C");
+            //
+            karlovy_vary.setText(Double.toString(data.get("karlovy vary")) + " °C");
+            usti_nad_labem.setText(Double.toString(data.get("usti nad labem")) + " °C");
+            liberec.setText(Double.toString(data.get("liberec")) + " °C");
+            hradec_kralove.setText(Double.toString(data.get("hradec kralove")) + " °C");
+            pardubice.setText(Double.toString(data.get("pardubice")) + " °C");
+            jihlava.setText(Double.toString(data.get("jihlava")) + " °C");
+            ceske_budejovice.setText(Double.toString(data.get("ceske budejovice")) + " °C");
+            
+            brno.setText(Double.toString(data.get("brno")) + " °C");
+            //
+            olomouc.setText(Double.toString(data.get("olomouc")) + " °C");
+            zlin.setText(Double.toString(data.get("zlin")) + " °C");
+            
+            ostrava.setText(Double.toString(data.get("ostrava")) + " °C");
+            
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+             
+        
     }
 
+     private HashMap getData(){
+        HashMap<String, Double> result = new HashMap<>();
+        MysqlConnect mysqlConnect = new MysqlConnect();
+
+        String sql = "SELECT * FROM `mesta`";
+        try {
+            PreparedStatement statement = mysqlConnect.connect().prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            
+            while (rs.next()) {
+                String nazev = rs.getString("nazev");
+                double teplota = rs.getDouble("teplota");
+                result.put(nazev, teplota);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            mysqlConnect.disconnect();
+        }
+        return result;
+    }
+    
+    private void showInfo(String mesto){
+        weatherForecast = new WeatherForecast("q=" + mesto);       
+        weatherByCity = new WeatherByCity(mesto);
+        String text = "";
+        text += "Teplota: " + weatherByCity.getMainTemp()+ " °C\n";
+        text += "Vlhkost: " + Math.round(weatherByCity.getMainHumidity())+ "%\n";
+        text += "Rychlost větru: " + weatherByCity.getWindSpeed()+ " m/s\n";
+        text += "Tlak: " + weatherByCity.getMainPressure()+ " hPa\n";
+        text += weatherByCity.getWeatherDescription()+ "\n";
+        
+        
+        pocasi.setText(text);
+        info.setTitle(mesto);
+        info.setSize(400, 300);
+        info.setVisible(true);
+        int[] xy = coordinatesToXY(weatherByCity.getCoordLat(), weatherByCity.getCoordLon());
+        pozice.setLocation(xy[0]-25, xy[1]-40);
+        pozice.setVisible(true);
+        obrazek.setIcon(ikony.getIconWeatherByCity());
+        wtf();
+    }
+    
+    
+    private double[] getCoordinates(int x, int y){
+        double xdif = 0.00740171605;
+        double ydif = 0.00493237334;
+        
+        int[] zaklad = {408, 87};
+        double[] coord = {50.870592121261794, 14.82327197732559};
+        
+        double lon = coord[1] + (x - zaklad[0]) * xdif;
+        double lat = coord[0] - (y - zaklad[1]) * ydif;
+        
+        double[] result = {lat, lon};
+        return result;
+    }
+    
+    private int[] coordinatesToXY(double lat, double lon){
+        int[] zaklad = {408, 87};
+        double[] coord = {50.870592121261794, 14.82327197732559};
+        double xdif = 0.00740171605;
+        double ydif = 0.00493237334;
+        
+        int x = (int) ((lon - coord[1]) / xdif + zaklad[0]);
+         
+        int y = (int) ((coord[0] - lat) / ydif + zaklad[1]);
+        
+        int[] result = {x, y};
+        return result;
+    }
+    
+    private void wtf(){
+                jLabel1.setIcon(ikony.getIkonyForecast(0));
+                jLabel1.setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(0, 0)+ 
+                                                                            "<br/>" + "Time: "+ weatherForecast.getArrayValue(0, 1)+
+                                                                            "<br/>" +  weatherForecast.getArrayValue(0, 2) + "</html>");
+                jLabel1.setHorizontalTextPosition(JLabel.CENTER);
+                jLabel1.setVerticalTextPosition(JLabel.BOTTOM);
+                
+                jLabel2.setIcon(ikony.getIkonyForecast(1));
+                jLabel2.setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(1, 0)+ 
+                                                                            "<br/>" + "Time: "+weatherForecast.getArrayValue(1, 1)+ 
+                                                                            "<br/>" + weatherForecast.getArrayValue(1, 2)+ "</html>");
+                jLabel2.setHorizontalTextPosition(JLabel.CENTER);
+                jLabel2.setVerticalTextPosition(JLabel.BOTTOM);
+                
+                jLabel3.setIcon(ikony.getIkonyForecast(2));
+                jLabel3.setText("<html><div style='text-align: center;'>" + "Temperature: "+weatherForecast.getArrayValue(2, 0)+ 
+                                                                            "<br/>" + "Time: "+weatherForecast.getArrayValue(2, 1)+ 
+                                                                            "<br/>" + weatherForecast.getArrayValue(2, 2)+ "</html>");
+                jLabel3.setHorizontalTextPosition(JLabel.CENTER);
+                jLabel3.setVerticalTextPosition(JLabel.BOTTOM);
+             
+
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,607 +176,465 @@ public class Pocasi extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDialog1 = new javax.swing.JDialog();
-        horniTlacitka = new javax.swing.JPanel();
-        mainButton = new javax.swing.JButton();
-        timeButton = new javax.swing.JButton();
-        searchButton = new javax.swing.JButton();
-        wbcButton = new javax.swing.JButton();
-        wfButton = new javax.swing.JButton();
-        okTlacitko = new javax.swing.JButton();
-        panelProOstatniPanely = new javax.swing.JPanel();
-        nastaveniMainPanel = new javax.swing.JPanel();
-        hodiny = new javax.swing.JCheckBox();
-        Search = new javax.swing.JCheckBox();
-        WeatherForCast = new javax.swing.JCheckBox();
-        WeatherByCity = new javax.swing.JCheckBox();
-        nastaveniTimePanel = new javax.swing.JPanel();
-        timeSlider = new javax.swing.JSlider();
-        timeLabel1 = new javax.swing.JLabel();
-        timeLabel2 = new javax.swing.JLabel();
-        timeLabel3 = new javax.swing.JLabel();
-        timeLabel4 = new javax.swing.JLabel();
-        timeLabel5 = new javax.swing.JLabel();
-        timeLabel6 = new javax.swing.JLabel();
-        timeSpinnerR = new javax.swing.JSpinner();
-        timeSpinnerG = new javax.swing.JSpinner();
-        timeSpinnerB = new javax.swing.JSpinner();
-        timePreview = new javax.swing.JButton();
-        nastaveniSearchPanel = new javax.swing.JPanel();
-        searchSlider = new javax.swing.JSlider();
-        searchLabel1 = new javax.swing.JLabel();
-        searchLabel2 = new javax.swing.JLabel();
-        searchLabel3 = new javax.swing.JLabel();
-        searchLabel4 = new javax.swing.JLabel();
-        searchLabel5 = new javax.swing.JLabel();
-        searchLabel6 = new javax.swing.JLabel();
-        searchSpinnerR = new javax.swing.JSpinner();
-        searchSpinnerG = new javax.swing.JSpinner();
-        searchSpinnerB = new javax.swing.JSpinner();
-        searchPreview = new javax.swing.JButton();
-        nastatveniWBCPanel = new javax.swing.JPanel();
-        wbcSlider = new javax.swing.JSlider();
-        wbcLabel1 = new javax.swing.JLabel();
-        wbcLabel2 = new javax.swing.JLabel();
-        wbcLabel3 = new javax.swing.JLabel();
-        wbcLabel4 = new javax.swing.JLabel();
-        wbcLabel5 = new javax.swing.JLabel();
-        wbcLabel6 = new javax.swing.JLabel();
-        wbcSpinnerR = new javax.swing.JSpinner();
-        wbcSpinnerG = new javax.swing.JSpinner();
-        wbcSpinnerB = new javax.swing.JSpinner();
-        wbcPreview = new javax.swing.JButton();
-        nastaveniWFPanel = new javax.swing.JPanel();
-        wfSlider = new javax.swing.JSlider();
-        wfLabel1 = new javax.swing.JLabel();
-        wfLabel2 = new javax.swing.JLabel();
-        wfLabel3 = new javax.swing.JLabel();
-        wfLabel4 = new javax.swing.JLabel();
-        wfLabel5 = new javax.swing.JLabel();
-        wfLabel6 = new javax.swing.JLabel();
-        wfSpinnerR = new javax.swing.JSpinner();
-        wfSpinnerG = new javax.swing.JSpinner();
-        wfSpinnerB = new javax.swing.JSpinner();
-        wfPreview = new javax.swing.JButton();
+        info = new javax.swing.JDialog();
+        obrazek = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        pocasi = new javax.swing.JTextArea();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel1 = new JPanel(null){
+            @Override
+            protected void paintComponent(Graphics g)
+            {
+                g.setColor( getBackground() );
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        nehledej = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        praha = new javax.swing.JLabel();
+        plzen = new javax.swing.JLabel();
+        karlovy_vary = new javax.swing.JLabel();
+        usti_nad_labem = new javax.swing.JLabel();
+        liberec = new javax.swing.JLabel();
+        hradec_kralove = new javax.swing.JLabel();
+        pardubice = new javax.swing.JLabel();
+        jihlava = new javax.swing.JLabel();
+        ceske_budejovice = new javax.swing.JLabel();
+        brno = new javax.swing.JLabel();
+        olomouc = new javax.swing.JLabel();
+        zlin = new javax.swing.JLabel();
+        ostrava = new javax.swing.JLabel();
+        hledej = new javax.swing.JLabel();
+        pozice = new javax.swing.JLabel();
+        pozadi = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        info.setBounds(new java.awt.Rectangle(0, 0, 560, 420));
+        info.setMaximumSize(new java.awt.Dimension(560, 420));
+        info.setMinimumSize(new java.awt.Dimension(560, 420));
+        info.setPreferredSize(new java.awt.Dimension(560, 420));
+        info.getContentPane().setLayout(null);
+
+        obrazek.setText("obrazek");
+        obrazek.setMaximumSize(new java.awt.Dimension(200, 200));
+        obrazek.setMinimumSize(new java.awt.Dimension(200, 200));
+        obrazek.setPreferredSize(new java.awt.Dimension(200, 200));
+        info.getContentPane().add(obrazek);
+        obrazek.setBounds(0, 0, 200, 200);
+
+        pocasi.setEditable(false);
+        pocasi.setColumns(20);
+        pocasi.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
+        pocasi.setRows(5);
+        pocasi.setPreferredSize(new java.awt.Dimension(280, 200));
+        jScrollPane1.setViewportView(pocasi);
+
+        info.getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(200, 0, 350, 200);
+
+        jLabel1.setText("jLabel1");
+        jLabel1.setMaximumSize(new java.awt.Dimension(120, 120));
+        jLabel1.setMinimumSize(new java.awt.Dimension(120, 120));
+        jLabel1.setPreferredSize(new java.awt.Dimension(120, 120));
+
+        jLabel2.setText("jLabel2");
+        jLabel2.setMaximumSize(new java.awt.Dimension(120, 120));
+        jLabel2.setMinimumSize(new java.awt.Dimension(120, 120));
+        jLabel2.setPreferredSize(new java.awt.Dimension(120, 120));
+
+        jLabel3.setText("jLabel3");
+        jLabel3.setMaximumSize(new java.awt.Dimension(120, 120));
+        jLabel3.setMinimumSize(new java.awt.Dimension(120, 120));
+        jLabel3.setPreferredSize(new java.awt.Dimension(120, 120));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        info.getContentPane().add(jPanel2);
+        jPanel2.setBounds(0, 200, 540, 180);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(680, 500));
+        setBounds(new java.awt.Rectangle(0, 0, 980, 610));
+        setMaximizedBounds(new java.awt.Rectangle(0, 0, 980, 610));
+        setMaximumSize(new java.awt.Dimension(980, 610));
+        setMinimumSize(new java.awt.Dimension(980, 610));
+        setName("Pocasi"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(980, 610));
         setResizable(false);
+        getContentPane().setLayout(null);
 
-        mainButton.setText("Main");
-        mainButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mainButtonActionPerformed(evt);
-            }
-        });
-        horniTlacitka.add(mainButton);
+        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
 
-        timeButton.setText("Time");
-        timeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timeButtonActionPerformed(evt);
-            }
-        });
-        horniTlacitka.add(timeButton);
-
-        searchButton.setText("Search");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
-            }
-        });
-        horniTlacitka.add(searchButton);
-
-        wbcButton.setText("WBC");
-        wbcButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wbcButtonActionPerformed(evt);
-            }
-        });
-        horniTlacitka.add(wbcButton);
-
-        wfButton.setText("WF");
-        wfButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wfButtonActionPerformed(evt);
-            }
-        });
-        horniTlacitka.add(wfButton);
-
-        okTlacitko.setText("Confirm");
-        okTlacitko.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okTlacitkoActionPerformed(evt);
+        nehledej.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
+        nehledej.setText("<");
+        nehledej.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nehledejMouseClicked(evt);
             }
         });
 
-        panelProOstatniPanely.setLayout(new java.awt.CardLayout());
+        jTextField1.setMinimumSize(new java.awt.Dimension(150, 25));
+        jTextField1.setPreferredSize(new java.awt.Dimension(150, 25));
 
-        hodiny.setText("Clock");
-        hodiny.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Hledat");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hodinyActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        Search.setText("Search");
-        Search.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchActionPerformed(evt);
-            }
-        });
-
-        WeatherForCast.setText("Weather Forecast");
-        WeatherForCast.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WeatherForCastActionPerformed(evt);
-            }
-        });
-
-        WeatherByCity.setText("Weather By City");
-        WeatherByCity.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WeatherByCityActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout nastaveniMainPanelLayout = new javax.swing.GroupLayout(nastaveniMainPanel);
-        nastaveniMainPanel.setLayout(nastaveniMainPanelLayout);
-        nastaveniMainPanelLayout.setHorizontalGroup(
-            nastaveniMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(nastaveniMainPanelLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(nastaveniMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(hodiny, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Search, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(WeatherForCast)
-                    .addComponent(WeatherByCity))
-                .addContainerGap(469, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
-        nastaveniMainPanelLayout.setVerticalGroup(
-            nastaveniMainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(nastaveniMainPanelLayout.createSequentialGroup()
-                .addGap(103, 103, 103)
-                .addComponent(hodiny)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(nehledej, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(WeatherByCity)
-                .addGap(5, 5, 5)
-                .addComponent(WeatherForCast)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Search)
-                .addContainerGap(130, Short.MAX_VALUE))
-        );
-
-        panelProOstatniPanely.add(nastaveniMainPanel, "card2");
-
-        nastaveniTimePanel.setLayout(null);
-
-        timeSlider.setMaximum(255);
-        timeSlider.setMinimum(1);
-        timeSlider.setValue(100);
-        timeSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                timeSliderStateChanged(evt);
-            }
-        });
-        nastaveniTimePanel.add(timeSlider);
-        timeSlider.setBounds(140, 300, 200, 26);
-
-        timeLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        timeLabel1.setText("Time");
-        nastaveniTimePanel.add(timeLabel1);
-        timeLabel1.setBounds(30, 20, 330, 50);
-
-        timeLabel2.setText("Red");
-        nastaveniTimePanel.add(timeLabel2);
-        timeLabel2.setBounds(40, 100, 30, 30);
-
-        timeLabel3.setText("Green");
-        nastaveniTimePanel.add(timeLabel3);
-        timeLabel3.setBounds(30, 160, 40, 30);
-
-        timeLabel4.setText("Blue");
-        nastaveniTimePanel.add(timeLabel4);
-        timeLabel4.setBounds(40, 230, 30, 30);
-
-        timeLabel5.setText("transparency");
-        nastaveniTimePanel.add(timeLabel5);
-        timeLabel5.setBounds(20, 300, 90, 20);
-
-        timeLabel6.setBackground(new java.awt.Color(153, 153, 153));
-        timeLabel6.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        timeLabel6.setText("100");
-        timeLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        nastaveniTimePanel.add(timeLabel6);
-        timeLabel6.setBounds(350, 300, 40, 30);
-
-        timeSpinnerR.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniTimePanel.add(timeSpinnerR);
-        timeSpinnerR.setBounds(140, 90, 70, 30);
-
-        timeSpinnerG.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniTimePanel.add(timeSpinnerG);
-        timeSpinnerG.setBounds(140, 160, 70, 30);
-
-        timeSpinnerB.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniTimePanel.add(timeSpinnerB);
-        timeSpinnerB.setBounds(140, 230, 70, 30);
-
-        timePreview.setText("preview");
-        timePreview.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                timePreviewActionPerformed(evt);
-            }
-        });
-        nastaveniTimePanel.add(timePreview);
-        timePreview.setBounds(470, 210, 100, 40);
-
-        panelProOstatniPanely.add(nastaveniTimePanel, "card3");
-
-        nastaveniSearchPanel.setLayout(null);
-
-        searchSlider.setMaximum(255);
-        searchSlider.setMinimum(1);
-        searchSlider.setValue(100);
-        searchSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                searchSliderStateChanged(evt);
-            }
-        });
-        nastaveniSearchPanel.add(searchSlider);
-        searchSlider.setBounds(140, 300, 200, 26);
-
-        searchLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        searchLabel1.setText("Search");
-        nastaveniSearchPanel.add(searchLabel1);
-        searchLabel1.setBounds(30, 20, 330, 50);
-
-        searchLabel2.setText("Red");
-        nastaveniSearchPanel.add(searchLabel2);
-        searchLabel2.setBounds(40, 100, 30, 30);
-
-        searchLabel3.setText("Green");
-        nastaveniSearchPanel.add(searchLabel3);
-        searchLabel3.setBounds(30, 160, 40, 30);
-
-        searchLabel4.setText("Blue");
-        nastaveniSearchPanel.add(searchLabel4);
-        searchLabel4.setBounds(40, 230, 30, 30);
-
-        searchLabel5.setText("transparency");
-        nastaveniSearchPanel.add(searchLabel5);
-        searchLabel5.setBounds(20, 300, 90, 20);
-
-        searchLabel6.setBackground(new java.awt.Color(153, 153, 153));
-        searchLabel6.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        searchLabel6.setText("100");
-        searchLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        nastaveniSearchPanel.add(searchLabel6);
-        searchLabel6.setBounds(350, 300, 40, 30);
-
-        searchSpinnerR.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniSearchPanel.add(searchSpinnerR);
-        searchSpinnerR.setBounds(140, 90, 70, 30);
-
-        searchSpinnerG.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniSearchPanel.add(searchSpinnerG);
-        searchSpinnerG.setBounds(140, 160, 70, 30);
-
-        searchSpinnerB.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniSearchPanel.add(searchSpinnerB);
-        searchSpinnerB.setBounds(140, 230, 70, 30);
-
-        searchPreview.setText("preview");
-        searchPreview.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchPreviewActionPerformed(evt);
-            }
-        });
-        nastaveniSearchPanel.add(searchPreview);
-        searchPreview.setBounds(470, 210, 100, 40);
-
-        panelProOstatniPanely.add(nastaveniSearchPanel, "card3");
-
-        nastatveniWBCPanel.setLayout(null);
-
-        wbcSlider.setMaximum(255);
-        wbcSlider.setMinimum(1);
-        wbcSlider.setValue(100);
-        wbcSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                wbcSliderStateChanged(evt);
-            }
-        });
-        nastatveniWBCPanel.add(wbcSlider);
-        wbcSlider.setBounds(140, 300, 200, 26);
-
-        wbcLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        wbcLabel1.setText("Weather By City");
-        nastatveniWBCPanel.add(wbcLabel1);
-        wbcLabel1.setBounds(30, 20, 330, 50);
-
-        wbcLabel2.setText("Red");
-        nastatveniWBCPanel.add(wbcLabel2);
-        wbcLabel2.setBounds(40, 100, 30, 30);
-
-        wbcLabel3.setText("Green");
-        nastatveniWBCPanel.add(wbcLabel3);
-        wbcLabel3.setBounds(30, 160, 40, 30);
-
-        wbcLabel4.setText("Blue");
-        nastatveniWBCPanel.add(wbcLabel4);
-        wbcLabel4.setBounds(40, 230, 30, 30);
-
-        wbcLabel5.setText("transparency");
-        nastatveniWBCPanel.add(wbcLabel5);
-        wbcLabel5.setBounds(20, 300, 90, 20);
-
-        wbcLabel6.setBackground(new java.awt.Color(153, 153, 153));
-        wbcLabel6.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        wbcLabel6.setText("100");
-        wbcLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        nastatveniWBCPanel.add(wbcLabel6);
-        wbcLabel6.setBounds(350, 300, 40, 30);
-
-        wbcSpinnerR.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastatveniWBCPanel.add(wbcSpinnerR);
-        wbcSpinnerR.setBounds(140, 90, 70, 30);
-
-        wbcSpinnerG.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastatveniWBCPanel.add(wbcSpinnerG);
-        wbcSpinnerG.setBounds(140, 160, 70, 30);
-
-        wbcSpinnerB.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastatveniWBCPanel.add(wbcSpinnerB);
-        wbcSpinnerB.setBounds(140, 230, 70, 30);
-
-        wbcPreview.setText("preview");
-        wbcPreview.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wbcPreviewActionPerformed(evt);
-            }
-        });
-        nastatveniWBCPanel.add(wbcPreview);
-        wbcPreview.setBounds(470, 210, 100, 40);
-
-        panelProOstatniPanely.add(nastatveniWBCPanel, "card3");
-
-        nastaveniWFPanel.setLayout(null);
-
-        wfSlider.setMaximum(255);
-        wfSlider.setMinimum(1);
-        wfSlider.setValue(100);
-        wfSlider.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                wfSliderStateChanged(evt);
-            }
-        });
-        nastaveniWFPanel.add(wfSlider);
-        wfSlider.setBounds(140, 300, 200, 26);
-
-        wfLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        wfLabel1.setText("Weather Forecast");
-        nastaveniWFPanel.add(wfLabel1);
-        wfLabel1.setBounds(30, 20, 330, 50);
-
-        wfLabel2.setText("Red");
-        nastaveniWFPanel.add(wfLabel2);
-        wfLabel2.setBounds(40, 100, 30, 30);
-
-        wfLabel3.setText("Green");
-        nastaveniWFPanel.add(wfLabel3);
-        wfLabel3.setBounds(30, 160, 40, 30);
-
-        wfLabel4.setText("Blue");
-        nastaveniWFPanel.add(wfLabel4);
-        wfLabel4.setBounds(40, 230, 30, 30);
-
-        wfLabel5.setText("transparency");
-        nastaveniWFPanel.add(wfLabel5);
-        wfLabel5.setBounds(20, 300, 90, 20);
-
-        wfLabel6.setBackground(new java.awt.Color(153, 153, 153));
-        wfLabel6.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        wfLabel6.setText("100");
-        wfLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        nastaveniWFPanel.add(wfLabel6);
-        wfLabel6.setBounds(350, 300, 40, 30);
-
-        wfSpinnerR.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniWFPanel.add(wfSpinnerR);
-        wfSpinnerR.setBounds(140, 90, 70, 30);
-
-        wfSpinnerG.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniWFPanel.add(wfSpinnerG);
-        wfSpinnerG.setBounds(140, 160, 70, 30);
-
-        wfSpinnerB.setModel(new javax.swing.SpinnerNumberModel(0, 0, 255, 1));
-        nastaveniWFPanel.add(wfSpinnerB);
-        wfSpinnerB.setBounds(140, 230, 70, 30);
-
-        wfPreview.setText("preview");
-        wfPreview.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wfPreviewActionPerformed(evt);
-            }
-        });
-        nastaveniWFPanel.add(wfPreview);
-        wfPreview.setBounds(470, 210, 100, 40);
-
-        panelProOstatniPanely.add(nastaveniWFPanel, "card3");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(horniTlacitka, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelProOstatniPanely, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(okTlacitko, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(113, 113, 113))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(horniTlacitka, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelProOstatniPanely, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(okTlacitko, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addComponent(jButton1)
+                .addGap(0, 482, Short.MAX_VALUE))
         );
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(0, 0, 230, 610);
+
+        praha.setText("Praha");
+        praha.setMaximumSize(new java.awt.Dimension(99, 16));
+        praha.setMinimumSize(new java.awt.Dimension(99, 16));
+        praha.setPreferredSize(new java.awt.Dimension(99, 16));
+        praha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                prahaMouseClicked(evt);
+            }
+        });
+        getContentPane().add(praha);
+        praha.setBounds(340, 240, 99, 16);
+
+        plzen.setText("Plzen");
+        plzen.setMaximumSize(new java.awt.Dimension(99, 16));
+        plzen.setMinimumSize(new java.awt.Dimension(99, 16));
+        plzen.setPreferredSize(new java.awt.Dimension(99, 16));
+        plzen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plzenMouseClicked(evt);
+            }
+        });
+        getContentPane().add(plzen);
+        plzen.setBounds(200, 290, 50, 16);
+
+        karlovy_vary.setText("Karlovy Vary");
+        karlovy_vary.setMaximumSize(new java.awt.Dimension(99, 16));
+        karlovy_vary.setMinimumSize(new java.awt.Dimension(99, 16));
+        karlovy_vary.setPreferredSize(new java.awt.Dimension(99, 16));
+        karlovy_vary.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                karlovy_varyMouseClicked(evt);
+            }
+        });
+        getContentPane().add(karlovy_vary);
+        karlovy_vary.setBounds(110, 210, 90, 16);
+
+        usti_nad_labem.setText("Usti nad Labem");
+        usti_nad_labem.setMaximumSize(new java.awt.Dimension(99, 16));
+        usti_nad_labem.setMinimumSize(new java.awt.Dimension(99, 16));
+        usti_nad_labem.setPreferredSize(new java.awt.Dimension(99, 16));
+        usti_nad_labem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usti_nad_labemMouseClicked(evt);
+            }
+        });
+        getContentPane().add(usti_nad_labem);
+        usti_nad_labem.setBounds(260, 140, 99, 16);
+
+        liberec.setText("Liberec");
+        liberec.setMaximumSize(new java.awt.Dimension(99, 16));
+        liberec.setMinimumSize(new java.awt.Dimension(99, 16));
+        liberec.setPreferredSize(new java.awt.Dimension(99, 16));
+        liberec.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                liberecMouseClicked(evt);
+            }
+        });
+        getContentPane().add(liberec);
+        liberec.setBounds(410, 110, 99, 16);
+
+        hradec_kralove.setText("Hradec Kralove");
+        hradec_kralove.setMaximumSize(new java.awt.Dimension(99, 16));
+        hradec_kralove.setMinimumSize(new java.awt.Dimension(99, 16));
+        hradec_kralove.setPreferredSize(new java.awt.Dimension(99, 16));
+        hradec_kralove.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hradec_kraloveMouseClicked(evt);
+            }
+        });
+        getContentPane().add(hradec_kralove);
+        hradec_kralove.setBounds(520, 200, 99, 16);
+
+        pardubice.setText("Pardubice");
+        pardubice.setMaximumSize(new java.awt.Dimension(99, 16));
+        pardubice.setMinimumSize(new java.awt.Dimension(99, 16));
+        pardubice.setPreferredSize(new java.awt.Dimension(99, 16));
+        pardubice.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pardubiceMouseClicked(evt);
+            }
+        });
+        getContentPane().add(pardubice);
+        pardubice.setBounds(560, 280, 99, 16);
+
+        jihlava.setText("Jihlava");
+        jihlava.setMaximumSize(new java.awt.Dimension(99, 16));
+        jihlava.setMinimumSize(new java.awt.Dimension(99, 16));
+        jihlava.setPreferredSize(new java.awt.Dimension(99, 16));
+        jihlava.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jihlavaMouseClicked(evt);
+            }
+        });
+        getContentPane().add(jihlava);
+        jihlava.setBounds(500, 380, 99, 16);
+
+        ceske_budejovice.setText("Ceske Budejovice");
+        ceske_budejovice.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ceske_budejoviceMouseClicked(evt);
+            }
+        });
+        getContentPane().add(ceske_budejovice);
+        ceske_budejovice.setBounds(310, 460, 99, 16);
+
+        brno.setText("Brno");
+        brno.setMaximumSize(new java.awt.Dimension(99, 16));
+        brno.setMinimumSize(new java.awt.Dimension(99, 16));
+        brno.setPreferredSize(new java.awt.Dimension(99, 16));
+        brno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                brnoMouseClicked(evt);
+            }
+        });
+        getContentPane().add(brno);
+        brno.setBounds(640, 420, 99, 16);
+
+        olomouc.setText("Olomouc");
+        olomouc.setMaximumSize(new java.awt.Dimension(99, 16));
+        olomouc.setMinimumSize(new java.awt.Dimension(99, 16));
+        olomouc.setPreferredSize(new java.awt.Dimension(99, 16));
+        olomouc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                olomoucMouseClicked(evt);
+            }
+        });
+        getContentPane().add(olomouc);
+        olomouc.setBounds(720, 340, 99, 16);
+
+        zlin.setText("Zlin");
+        zlin.setMaximumSize(new java.awt.Dimension(99, 16));
+        zlin.setMinimumSize(new java.awt.Dimension(99, 16));
+        zlin.setPreferredSize(new java.awt.Dimension(99, 16));
+        zlin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                zlinMouseClicked(evt);
+            }
+        });
+        getContentPane().add(zlin);
+        zlin.setBounds(780, 420, 99, 16);
+
+        ostrava.setText("Ostrava");
+        ostrava.setMaximumSize(new java.awt.Dimension(99, 16));
+        ostrava.setMinimumSize(new java.awt.Dimension(99, 16));
+        ostrava.setPreferredSize(new java.awt.Dimension(99, 16));
+        ostrava.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ostravaMouseClicked(evt);
+            }
+        });
+        getContentPane().add(ostrava);
+        ostrava.setBounds(830, 290, 99, 16);
+
+        hledej.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
+        hledej.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        hledej.setText(">");
+        hledej.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hledejMouseClicked(evt);
+            }
+        });
+        getContentPane().add(hledej);
+        hledej.setBounds(0, 0, 50, 50);
+
+        pozice.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pozice.setForeground(new java.awt.Color(255, 0, 0));
+        pozice.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pozice.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pocasi/lokace30.png"))); // NOI18N
+        pozice.setToolTipText("");
+        pozice.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pozice.setMaximumSize(new java.awt.Dimension(30, 30));
+        pozice.setMinimumSize(new java.awt.Dimension(30, 30));
+        pozice.setPreferredSize(new java.awt.Dimension(30, 30));
+        getContentPane().add(pozice);
+        pozice.setBounds(370, 360, 50, 50);
+
+        pozadi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pocasi/mapa.png"))); // NOI18N
+        pozadi.setText("jLabel1");
+        pozadi.setMaximumSize(new java.awt.Dimension(980, 610));
+        pozadi.setMinimumSize(new java.awt.Dimension(980, 610));
+        pozadi.setPreferredSize(new java.awt.Dimension(980, 610));
+        pozadi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pozadiMouseClicked(evt);
+            }
+        });
+        getContentPane().add(pozadi);
+        pozadi.setBounds(0, 0, 980, 610);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void hodinyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hodinyActionPerformed
+    private void hledejMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hledejMouseClicked
         // TODO add your handling code here:
-        AktivHodiny = hodiny.isSelected();
+        jPanel1.setVisible(true);
+        hledej.setVisible(false);
+    }//GEN-LAST:event_hledejMouseClicked
+
+    private void nehledejMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nehledejMouseClicked
+        // TODO add your handling code here:
+        jPanel1.setVisible(false);
+        hledej.setVisible(true);
+    }//GEN-LAST:event_nehledejMouseClicked
+
+    private void prahaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prahaMouseClicked
+        // TODO add your handling code here:
+        showInfo("Praha");
+    }//GEN-LAST:event_prahaMouseClicked
+
+    private void plzenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plzenMouseClicked
+        // TODO add your handling code here:
+        showInfo("Plzen");
+    }//GEN-LAST:event_plzenMouseClicked
+
+    private void karlovy_varyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karlovy_varyMouseClicked
+        // TODO add your handling code here:
+        showInfo("Karlovy Vary");
+    }//GEN-LAST:event_karlovy_varyMouseClicked
+
+    private void usti_nad_labemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usti_nad_labemMouseClicked
+        // TODO add your handling code here:
+        showInfo("Usti nad Labem");
+    }//GEN-LAST:event_usti_nad_labemMouseClicked
+
+    private void liberecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liberecMouseClicked
+        // TODO add your handling code here:
+        showInfo("Liberec");
+    }//GEN-LAST:event_liberecMouseClicked
+
+    private void hradec_kraloveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hradec_kraloveMouseClicked
+        // TODO add your handling code here:
+        showInfo("Hradec Kralove");
+    }//GEN-LAST:event_hradec_kraloveMouseClicked
+
+    private void pardubiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pardubiceMouseClicked
+        // TODO add your handling code here:
+        showInfo("Pardubice");
+    }//GEN-LAST:event_pardubiceMouseClicked
+
+    private void jihlavaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jihlavaMouseClicked
+        // TODO add your handling code here:
+        showInfo("Jihlava");
+    }//GEN-LAST:event_jihlavaMouseClicked
+
+    private void ceske_budejoviceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ceske_budejoviceMouseClicked
+        // TODO add your handling code here:
+        showInfo("Ceske Budejovice");
+    }//GEN-LAST:event_ceske_budejoviceMouseClicked
+
+    private void brnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brnoMouseClicked
+        // TODO add your handling code here:
+        showInfo("Brno");
+    }//GEN-LAST:event_brnoMouseClicked
+
+    private void olomoucMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_olomoucMouseClicked
+        // TODO add your handling code here:
+        showInfo("Olomouc");
+    }//GEN-LAST:event_olomoucMouseClicked
+
+    private void zlinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zlinMouseClicked
+        // TODO add your handling code here:
+        showInfo("Zlin");
+    }//GEN-LAST:event_zlinMouseClicked
+
+    private void ostravaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ostravaMouseClicked
+        // TODO add your handling code here:
+        showInfo("Ostrava");
+    }//GEN-LAST:event_ostravaMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        showInfo(jTextField1.getText());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void pozadiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pozadiMouseClicked
+        int x = evt.getX();
+        int y = evt.getY();
+        double[] coord = getCoordinates(x, y);
       
-    }//GEN-LAST:event_hodinyActionPerformed
-
-    private void okTlacitkoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okTlacitkoActionPerformed
-      jDialog1.setVisible(true);
-      jDialog1.revalidate();
-      jDialog1.repaint();
-    
-    
-    panelTime.getPanelBackground().setBackground(new Color((Integer)timeSpinnerR.getValue(),(Integer)timeSpinnerG.getValue(),(Integer)timeSpinnerB.getValue(),timeSlider.getValue()));
-    panelSearch.getPanelBackground().setBackground(new Color((Integer)searchSpinnerR.getValue(),(Integer)searchSpinnerG.getValue(),(Integer)searchSpinnerB.getValue(),searchSlider.getValue()));
-    panelWBC.getPanelBackground().setBackground(new Color((Integer)wbcSpinnerR.getValue(),(Integer)wbcSpinnerG.getValue(),(Integer)wbcSpinnerB.getValue(),wbcSlider.getValue()));
-    panelWF.getPanelBackground().setBackground(new Color((Integer)wfSpinnerR.getValue(),(Integer)wfSpinnerG.getValue(),(Integer)wfSpinnerB.getValue(),wfSlider.getValue()));
-    
-    
-    System.out.println(AktivHodiny);
-    System.out.println(AktivHWeatherByCity);
-    System.out.println(AktivWeatherForecast);
-    System.out.println(AktivSearch);
-    
-    addPanels();
-    
-  
-  
-    }//GEN-LAST:event_okTlacitkoActionPerformed
-
-    private void WeatherByCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeatherByCityActionPerformed
-        // TODO add your handling code here:
-        AktivHWeatherByCity = WeatherByCity.isSelected();
-    }//GEN-LAST:event_WeatherByCityActionPerformed
-
-    private void WeatherForCastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeatherForCastActionPerformed
-        // TODO add your handling code here:
-        AktivWeatherForecast = WeatherForCast.isSelected();
-    }//GEN-LAST:event_WeatherForCastActionPerformed
-
-    private void SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchActionPerformed
-        // TODO add your handling code here:
-        AktivSearch = Search.isSelected();
-    }//GEN-LAST:event_SearchActionPerformed
-
-    private void mainButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainButtonActionPerformed
-       panelProOstatniPanely.removeAll();
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
+        weatherByCoordinates = new WeatherByCoordinates(coord[0], coord[1]);
+        String text = "";
+        text += "Teplota: " + weatherByCoordinates.getMainTemp()+ " °C\n";
+        text += "Vlhkost: " + Math.round(weatherByCoordinates.getMainHumidity())+ "%\n";
+        text += "Rychlost větru: " + weatherByCoordinates.getWindSpeed()+ " m/s\n";
+        text += "Tlak: " + weatherByCoordinates.getMainPressure()+ " hPa\n";
+        text += weatherByCoordinates.getWeatherDescription()+ "\n";
         
-       panelProOstatniPanely.add(nastaveniMainPanel);
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-    }//GEN-LAST:event_mainButtonActionPerformed
-
-    private void timeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeButtonActionPerformed
-       panelProOstatniPanely.removeAll();
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
+        weatherForecast = new WeatherForecast("lat=" + coord[0] + "&lon=" + coord[1]); 
         
-       panelProOstatniPanely.add(nastaveniTimePanel);
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-    }//GEN-LAST:event_timeButtonActionPerformed
-
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        panelProOstatniPanely.removeAll();
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-        
-       panelProOstatniPanely.add(nastaveniSearchPanel);
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-    }//GEN-LAST:event_searchButtonActionPerformed
-
-    private void wbcButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wbcButtonActionPerformed
-        // TODO add your handling code here:
-       panelProOstatniPanely.removeAll();
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-        
-       panelProOstatniPanely.add(nastatveniWBCPanel);
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-    }//GEN-LAST:event_wbcButtonActionPerformed
-
-    private void wfButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wfButtonActionPerformed
-        // TODO add your handling code here:
-       panelProOstatniPanely.removeAll();
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-        
-       panelProOstatniPanely.add(nastaveniWFPanel);
-       panelProOstatniPanely.repaint();
-       panelProOstatniPanely.revalidate();
-    }//GEN-LAST:event_wfButtonActionPerformed
-
-    private void timeSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_timeSliderStateChanged
-        // TODO add your handling code here:
-        timeLabel6.setText(Integer.toString(timeSlider.getValue()));
-    }//GEN-LAST:event_timeSliderStateChanged
-
-    private void searchSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_searchSliderStateChanged
-        // TODO add your handling code here:
-        searchLabel6.setText(Integer.toString(searchSlider.getValue()));
-    }//GEN-LAST:event_searchSliderStateChanged
-
-    private void wbcSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_wbcSliderStateChanged
-        // TODO add your handling code here:
-        wbcLabel6.setText(Integer.toString(wbcSlider.getValue()));
-    }//GEN-LAST:event_wbcSliderStateChanged
-
-    private void wfSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_wfSliderStateChanged
-        // TODO add your handling code here:
-        wfLabel6.setText(Integer.toString(wfSlider.getValue()));
-    }//GEN-LAST:event_wfSliderStateChanged
-
-    private void timePreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timePreviewActionPerformed
-        // TODO add your handling code here:
-        panelBarva.setBackground(new Color((Integer)timeSpinnerR.getValue(),(Integer)timeSpinnerG.getValue(),(Integer)timeSpinnerB.getValue(),timeSlider.getValue()));
-    }//GEN-LAST:event_timePreviewActionPerformed
-
-    private void searchPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPreviewActionPerformed
-        // TODO add your handling code here:
-        panelBarva.setBackground(new Color((Integer)searchSpinnerR.getValue(),(Integer)searchSpinnerG.getValue(),(Integer)searchSpinnerB.getValue(),searchSlider.getValue()));
-    }//GEN-LAST:event_searchPreviewActionPerformed
-
-    private void wbcPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wbcPreviewActionPerformed
-        // TODO add your handling code here:
-        panelBarva.setBackground(new Color((Integer)wbcSpinnerR.getValue(),(Integer)wbcSpinnerG.getValue(),(Integer)wbcSpinnerB.getValue(),wbcSlider.getValue()));
-    }//GEN-LAST:event_wbcPreviewActionPerformed
-
-    private void wfPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wfPreviewActionPerformed
-        // TODO add your handling code here:
-        panelBarva.setBackground(new Color((Integer)wfSpinnerR.getValue(),(Integer)wfSpinnerG.getValue(),(Integer)wfSpinnerB.getValue(),wfSlider.getValue()));
-    }//GEN-LAST:event_wfPreviewActionPerformed
+        pocasi.setText(text);
+        info.setTitle(weatherByCoordinates.getName());
+        info.setSize(400, 300);
+        info.setVisible(true);
+        pozice.setLocation(x-25, y-40);
+        pozice.setVisible(true);
+        obrazek.setIcon(ikony.getIconWeatherByCoordinates());
+        wtf();
+    }//GEN-LAST:event_pozadiMouseClicked
 
     /**
      * @param args the command line arguments
@@ -695,143 +662,60 @@ public class Pocasi extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new Pocasi().setVisible(true);
-               
             }
         });
-        
     }
+
+    public WeatherByCity getWeatherByCity() {
+        return weatherByCity;
+    }
+
+    public WeatherForecast getWeatherForecast() {
+        return weatherForecast;
+    }
+
+    public WeatherByCoordinates getWeatherByCoordinates() {
+        return weatherByCoordinates;
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox Search;
-    private javax.swing.JCheckBox WeatherByCity;
-    private javax.swing.JCheckBox WeatherForCast;
-    private javax.swing.JCheckBox hodiny;
-    private javax.swing.JPanel horniTlacitka;
-    private javax.swing.JDialog jDialog1;
-    private javax.swing.JButton mainButton;
-    private javax.swing.JPanel nastatveniWBCPanel;
-    private javax.swing.JPanel nastaveniMainPanel;
-    private javax.swing.JPanel nastaveniSearchPanel;
-    private javax.swing.JPanel nastaveniTimePanel;
-    private javax.swing.JPanel nastaveniWFPanel;
-    private javax.swing.JButton okTlacitko;
-    private javax.swing.JPanel panelProOstatniPanely;
-    private javax.swing.JButton searchButton;
-    private javax.swing.JLabel searchLabel1;
-    private javax.swing.JLabel searchLabel2;
-    private javax.swing.JLabel searchLabel3;
-    private javax.swing.JLabel searchLabel4;
-    private javax.swing.JLabel searchLabel5;
-    private javax.swing.JLabel searchLabel6;
-    private javax.swing.JButton searchPreview;
-    private javax.swing.JSlider searchSlider;
-    private javax.swing.JSpinner searchSpinnerB;
-    private javax.swing.JSpinner searchSpinnerG;
-    private javax.swing.JSpinner searchSpinnerR;
-    private javax.swing.JButton timeButton;
-    private javax.swing.JLabel timeLabel1;
-    private javax.swing.JLabel timeLabel2;
-    private javax.swing.JLabel timeLabel3;
-    private javax.swing.JLabel timeLabel4;
-    private javax.swing.JLabel timeLabel5;
-    private javax.swing.JLabel timeLabel6;
-    private javax.swing.JButton timePreview;
-    private javax.swing.JSlider timeSlider;
-    private javax.swing.JSpinner timeSpinnerB;
-    private javax.swing.JSpinner timeSpinnerG;
-    private javax.swing.JSpinner timeSpinnerR;
-    private javax.swing.JButton wbcButton;
-    private javax.swing.JLabel wbcLabel1;
-    private javax.swing.JLabel wbcLabel2;
-    private javax.swing.JLabel wbcLabel3;
-    private javax.swing.JLabel wbcLabel4;
-    private javax.swing.JLabel wbcLabel5;
-    private javax.swing.JLabel wbcLabel6;
-    private javax.swing.JButton wbcPreview;
-    private javax.swing.JSlider wbcSlider;
-    private javax.swing.JSpinner wbcSpinnerB;
-    private javax.swing.JSpinner wbcSpinnerG;
-    private javax.swing.JSpinner wbcSpinnerR;
-    private javax.swing.JButton wfButton;
-    private javax.swing.JLabel wfLabel1;
-    private javax.swing.JLabel wfLabel2;
-    private javax.swing.JLabel wfLabel3;
-    private javax.swing.JLabel wfLabel4;
-    private javax.swing.JLabel wfLabel5;
-    private javax.swing.JLabel wfLabel6;
-    private javax.swing.JButton wfPreview;
-    private javax.swing.JSlider wfSlider;
-    private javax.swing.JSpinner wfSpinnerB;
-    private javax.swing.JSpinner wfSpinnerG;
-    private javax.swing.JSpinner wfSpinnerR;
+    private javax.swing.JLabel brno;
+    private javax.swing.JLabel ceske_budejovice;
+    private javax.swing.JLabel hledej;
+    private javax.swing.JLabel hradec_kralove;
+    private javax.swing.JDialog info;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jihlava;
+    private javax.swing.JLabel karlovy_vary;
+    private javax.swing.JLabel liberec;
+    private javax.swing.JLabel nehledej;
+    private javax.swing.JLabel obrazek;
+    private javax.swing.JLabel olomouc;
+    private javax.swing.JLabel ostrava;
+    private javax.swing.JLabel pardubice;
+    private javax.swing.JLabel plzen;
+    private javax.swing.JTextArea pocasi;
+    private javax.swing.JLabel pozadi;
+    private javax.swing.JLabel pozice;
+    private javax.swing.JLabel praha;
+    private javax.swing.JLabel usti_nad_labem;
+    private javax.swing.JLabel zlin;
     // End of variables declaration//GEN-END:variables
-
-    
-    public void addPanels(){
-     if(AktivHodiny){
-     jDialog1.add(panelTime.getPanelBackground());
-     }
-     else{
-     jDialog1.remove(panelTime.getPanelBackground());
-     }
-    if(AktivSearch){
-     jDialog1.add(panelSearch.getPanelBackground());
-     }
-     else{
-     jDialog1.remove(panelSearch.getPanelBackground());
-     }
-     if(AktivHWeatherByCity){
-     jDialog1.add(panelWBC.getPanelBackground());
-     }
-      else{
-     jDialog1.remove(panelWBC.getPanelBackground());
-     }
-    if(AktivWeatherForecast){
-     jDialog1.add(panelWF.getPanelBackground());
-     }
-     else{
-     jDialog1.remove(panelWF.getPanelBackground());
-     }
-    }
-    
-        public PanelTime getPanelTime() {
-        return panelTime;
-    }
-
-    public PanelSearch getPanelSearch() {
-        return panelSearch;
-    }
-
-    public PanelWBC getPanelWBC() {
-        return panelWBC;
-    }
-
-    public PanelWF getPanelWF() {
-        return panelWF;
-    }
-
-    public JDialog getjDialog1() {
-        return jDialog1;
-    }
-
-  
-       
-}
-
-class PanelBarva extends JPanel{
-       @Override
-    protected void paintComponent(Graphics g)
-    {
-        g.setColor( getBackground() );
-        g.fillRect(0, 0, getWidth(), getHeight());
-        super.paintComponent(g);
-    }
-
-
-
 }

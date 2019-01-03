@@ -1,4 +1,4 @@
-package pocasi;
+package NaPamatku;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class WeatherForecast {
     public WeatherForecast(String city){
         try{
             //vytvoreni url
-            URL request_url = new URL(String.format("http://api.openweathermap.org/data/2.5/forecast?%s&units=metric&APPID=%s", city, API_KEY));
+            URL request_url = new URL(String.format("http://api.openweathermap.org/data/2.5/forecast?q=%s&units=metric&APPID=%s", city, API_KEY));
             //otevreni spojeni
             HttpURLConnection connection = (HttpURLConnection) request_url.openConnection();
             //kod odpovedi

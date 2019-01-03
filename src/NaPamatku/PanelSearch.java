@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pocasi;
+package NaPamatku;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -66,7 +66,7 @@ public class PanelSearch {
          @Override
          public void actionPerformed(ActionEvent e) {
              try{
-                new test.Mapa().setVisible(true);
+//                new pocasi.Mapa().setVisible(true);
                 weatherByCity = new WeatherByCity(textfield.getText());
                 weatherForecast = new WeatherForecast(textfield.getText());
                 handler.getTextArea().setText(weatherByCity.toString());

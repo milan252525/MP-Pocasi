@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pocasi;
+package NaPamatku;
 
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -29,26 +29,38 @@ public class Handler {
     }
 
     public WeatherByCity getWeatherByCity(){
-        return pocasi.getWeatherByCity();
+        return pocasi.getPanelSearch().getWeatherByCity();
     }
     
     public String getWeatherByCityIcon(){
-        return pocasi.getWeatherByCity().getWeatherIcon();
+        return pocasi.getPanelSearch().getWeatherByCity().getWeatherIcon();
     }
     
     public WeatherForecast getWeatherForecast(){
-        return pocasi.getWeatherForecast();
+        return pocasi.getPanelSearch().getWeatherForecast();
     }
     
     public String getWeatherForecastIcon(int x){
-        return pocasi.getWeatherForecast().getArrayValue(x,3);
+        return pocasi.getPanelSearch().getWeatherForecast().getArrayValue(x,3);
     }
     
-    public WeatherByCoordinates getWeatherByCoordinates(){
-       return pocasi.getWeatherByCoordinates();
+    public JLabel getLabel(){
+        return pocasi.getPanelWBC().getLabel();
     }
     
-      public String getWeatherByCoordinatesIcon(){
-        return pocasi.getWeatherByCoordinates().getWeatherIcon();
+    public JTextArea getTextArea(){
+        return pocasi.getPanelWBC().getTextarea();
+    }
+    
+    public JLabel getLabel1(){
+        return pocasi.getPanelWF().getLabel1();
+    }
+    
+    public JLabel getLabel2(){
+        return pocasi.getPanelWF().getLabel2();
+    }
+    
+    public JLabel getLabel3(){
+        return pocasi.getPanelWF().getLabel3();
     }
 }
