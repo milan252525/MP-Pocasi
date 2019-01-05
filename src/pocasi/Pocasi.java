@@ -21,10 +21,15 @@ import javax.swing.JPanel;
  * @author Milan Abrahám, Anh Thai Hoang
  */
 public class Pocasi extends javax.swing.JFrame {
+    /** Objekt s výsledkem vyhledávání počasí podle města */
     WeatherByCity weatherByCity;
+    /** Objekt s výsledkem předpovědi počasí podle města */
     WeatherForecast weatherForecast;
+    /** Objekt s výsledkem vyhledávání počasí podle souřadnic */
     WeatherByCoordinates weatherByCoordinates;
+    /** Handler */
     Handler handler;
+    /** Objekt s ikonami */
     IkonyPocasi ikony;
     
     /**
@@ -74,7 +79,6 @@ public class Pocasi extends javax.swing.JFrame {
     private HashMap getData(){
         HashMap<String, Double> result = new HashMap<>();
         MysqlConnect mysqlConnect = new MysqlConnect();
-
         String sql = "SELECT * FROM `mesta`";
         try {
             PreparedStatement statement = mysqlConnect.connect().prepareStatement(sql);
@@ -95,6 +99,7 @@ public class Pocasi extends javax.swing.JFrame {
     /**
      * Metoda sloužící k vytvoření menšího vyskakovacího okna
      * Okno slouží k zobrazení detailních informací o počasí v dané obci
+     * @param mesto String obsahující název vyhledávaného města
      */
     private void showInfo(String mesto){
         chyba.setVisible(false);
@@ -676,7 +681,6 @@ public class Pocasi extends javax.swing.JFrame {
         pozice.setBounds(370, 360, 50, 50);
 
         pozadi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pocasi/mapa.png"))); // NOI18N
-        pozadi.setText("jLabel1");
         pozadi.setMaximumSize(new java.awt.Dimension(980, 610));
         pozadi.setMinimumSize(new java.awt.Dimension(980, 610));
         pozadi.setPreferredSize(new java.awt.Dimension(980, 610));
@@ -693,6 +697,7 @@ public class Pocasi extends javax.swing.JFrame {
     
     /**
      * Schování okna pro vyhledávání
+     * @param evt event kliknutí myši
      */
     private void hledejMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hledejMouseClicked
         vyhledavciOkno.setVisible(true);
@@ -700,6 +705,7 @@ public class Pocasi extends javax.swing.JFrame {
     }//GEN-LAST:event_hledejMouseClicked
     /**
      * Zobrazení okna pro vyhledávání
+     * @param evt event kliknutí myši
      */
     private void nehledejMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nehledejMouseClicked
         vyhledavciOkno.setVisible(false);
@@ -707,90 +713,105 @@ public class Pocasi extends javax.swing.JFrame {
     }//GEN-LAST:event_nehledejMouseClicked
     /**
      * Zobrazení infa o počasí pro město Praha
+     * @param evt event kliknutí myši
      */
     private void prahaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prahaMouseClicked
         showInfo("Praha");
     }//GEN-LAST:event_prahaMouseClicked
     /**
      * Zobrazení infa o počasí pro město Plzeň
+     * @param evt event kliknutí myši
      */
     private void plzenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plzenMouseClicked
         showInfo("Plzen");
     }//GEN-LAST:event_plzenMouseClicked
     /**
      * Zobrazení infa o počasí pro město Karlovy Vary
+     * @param evt event kliknutí myši
      */
     private void karlovy_varyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_karlovy_varyMouseClicked
         showInfo("Karlovy Vary");
     }//GEN-LAST:event_karlovy_varyMouseClicked
     /**
      * Zobrazení infa o počasí pro město Ústí nad Labem
+     * @param evt event kliknutí myši
      */
     private void usti_nad_labemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usti_nad_labemMouseClicked
         showInfo("Usti nad Labem");
     }//GEN-LAST:event_usti_nad_labemMouseClicked
     /**
      * Zobrazení infa o počasí pro město Liberec
+     * @param evt event kliknutí myši
      */
     private void liberecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liberecMouseClicked
         showInfo("Liberec");
     }//GEN-LAST:event_liberecMouseClicked
     /**
      * Zobrazení infa o počasí pro město Hradec Králové
+     * @param evt event kliknutí myši
      */
     private void hradec_kraloveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hradec_kraloveMouseClicked
         showInfo("Hradec Kralove");
     }//GEN-LAST:event_hradec_kraloveMouseClicked
     /**
      * Zobrazení infa o počasí pro město Pardubice
+     * @param evt event kliknutí myši
      */
     private void pardubiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pardubiceMouseClicked
         showInfo("Pardubice");
     }//GEN-LAST:event_pardubiceMouseClicked
     /**
      * Zobrazení infa o počasí pro město Jihlava
+     * @param evt event kliknutí myši
      */
     private void jihlavaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jihlavaMouseClicked
         showInfo("Jihlava");
     }//GEN-LAST:event_jihlavaMouseClicked
     /**
      * Zobrazení infa o počasí pro město České Budějovice
+     * @param evt event kliknutí myši
      */
     private void ceske_budejoviceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ceske_budejoviceMouseClicked
         showInfo("Ceske Budejovice");
     }//GEN-LAST:event_ceske_budejoviceMouseClicked
     /**
      * Zobrazení infa o počasí pro město Brno
+     * @param evt event kliknutí myši
      */
     private void brnoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_brnoMouseClicked
         showInfo("Brno");
     }//GEN-LAST:event_brnoMouseClicked
     /**
      * Zobrazení infa o počasí pro město Olomouc
+     * @param evt event kliknutí myši
      */
     private void olomoucMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_olomoucMouseClicked
         showInfo("Olomouc");
     }//GEN-LAST:event_olomoucMouseClicked
     /**
      * Zobrazení infa o počasí pro město Zlín
+     * @param evt event kliknutí myši
      */
     private void zlinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zlinMouseClicked
         showInfo("Zlín");
     }//GEN-LAST:event_zlinMouseClicked
     /**
      * Zobrazení infa o počasí pro město Ostrava
+     * @param evt event kliknutí myši
      */
     private void ostravaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ostravaMouseClicked
         showInfo("Ostrava");
     }//GEN-LAST:event_ostravaMouseClicked
     /**
      * Získání hledaného místa z textového pole a předání metodě pro vykreslení detailů
+     * @param evt event kliknutí myši
      */
     private void vyhledavaniButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vyhledavaniButtonActionPerformed
         showInfo(vyhledavaniText.getText());
     }//GEN-LAST:event_vyhledavaniButtonActionPerformed
      /**
      * Zobrazení infa o počasí pro místo, na které uživatel klikne
+     * @param evt event kliknutí myši
      */
     private void pozadiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pozadiMouseClicked
         int x = evt.getX();
@@ -886,43 +907,76 @@ public class Pocasi extends javax.swing.JFrame {
         return weatherByCoordinates;
     }
     
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    //* Label zobrazující teplotu pro město Brno */
     private javax.swing.JLabel brno;
+    //* Čas ve kterém bylo hledání spuštěno */
     private javax.swing.JLabel cas;
+    //* Label zobrazující teplotu pro město České Budějovice */
     private javax.swing.JLabel ceske_budejovice;
+    //* Label zobrazující chybové hlášení */
     private javax.swing.JTextArea chyba;
+    //* Label obsahující další informace o počasí */
     private javax.swing.JTextArea dalsiInfo;
+    //* Label, který po kliknutí zobrazí vyhledávací panel */
     private javax.swing.JLabel hledej;
+    //* Label zobrazující teplotu pro město Hradec Králové */
     private javax.swing.JLabel hradec_kralove;
+    //* Okno pro zobrazování detailů o počasí */
     private javax.swing.JDialog info;
+    //* Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel1;
+    //* Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel2;
+    //* Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel3;
+    //* Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel4;
+    //* Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel5;
+    //* Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel6;
+    //* Panel obsahující předpověď na následující dny */
     private javax.swing.JPanel jPanel2;
+    //* Panel obsahující všechny komponenty v okně info */
     private javax.swing.JPanel jPanel3;
+    //* Label zobrazující teplotu pro město Jihlava */
     private javax.swing.JLabel jihlava;
+    //* Label zobrazující teplotu pro město Karovy Vary */
     private javax.swing.JLabel karlovy_vary;
+    //* Label zobrazující teplotu pro město Liberec */
     private javax.swing.JLabel liberec;
+    //* Název města */
     private javax.swing.JLabel nazevMesta;
+    //* Label, který po kliknutí schová vyhledávací panel */
     private javax.swing.JLabel nehledej;
+    //* Label zobrazující ikonu počasí */
     private javax.swing.JLabel obrazek;
+    //* Label zobrazující teplotu pro město Olomouc */
     private javax.swing.JLabel olomouc;
+    //* Label zobrazující teplotu pro město Ostrava */
     private javax.swing.JLabel ostrava;
+    //* Label zobrazující teplotu pro město Pardubice */
     private javax.swing.JLabel pardubice;
+    //* Label zobrazující teplotu pro město Plzeň */
     private javax.swing.JLabel plzen;
+    //* Label obsahující mapu */
     private javax.swing.JLabel pozadi;
+    //* Label zobrazující polohu hledané obce/místa  */
     private javax.swing.JLabel pozice;
+    //* Label zobrazující teplotu pro město Praha */
     private javax.swing.JLabel praha;
+    //* Teplota */
     private javax.swing.JLabel teplota;
+    //* Label zobrazující teplotu pro město Ústí nad Labem */
     private javax.swing.JLabel usti_nad_labem;
+    //* Tlačítko pro potvrzení vyhledávání */
     private javax.swing.JButton vyhledavaniButton;
+    //* Text field pro zadání hledané obce */
     private javax.swing.JTextField vyhledavaniText;
+    //* Vyhledávací okno */
     private javax.swing.JPanel vyhledavciOkno;
+    //* Label zobrazující teplotu pro město Zlín */
     private javax.swing.JLabel zlin;
     // End of variables declaration//GEN-END:variables
 }
