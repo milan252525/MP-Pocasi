@@ -31,7 +31,7 @@ while True:
     sql = "UPDATE mesta SET teplota = %s WHERE nazev = %s"
     val = (w.get_temperature('celsius')["temp"], city)    
     cursor.execute(sql, val)
-    time.sleep(0.5)
+    time.sleep(2)
 
   #sql = "INSERT INTO mesta (nazev, teplota) VALUES (%s, %s)"
 

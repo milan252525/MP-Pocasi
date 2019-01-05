@@ -11,17 +11,28 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+/**
+ * Třída pro získání předpovědi pro město/lokaci
+ * @author Milan Abrahám, Anh Thain Hoang
+ */
 public class WeatherForecast {
- private final String API_KEY = "353b379036c2911483cfb9147c1ec9f0";
+    /** Klíč sloužící k autentizaci při připojení k serveru */
+    private final String API_KEY = "353b379036c2911483cfb9147c1ec9f0";
     
+    /** Proměnná pro uložení dat ze žádosti */
     private String response_json, url;
+    /** Proměnná pro uložení Kódu odpovědi serveru */
     private int response_code;
+    /** Proměnná pro určení zda se vše uložilo správně */
     private boolean funguje = true;
     
-    //promenne pro data ze zadosti
+    /** Pole polí obsahující informace o počasí pro následující dny */
     private String[][] array;
 
-
+    /**
+     * Konstruktor třídy pro získání předpovědi pro město/lokaci
+     * @param city řetězec obsahující název města
+     */
     public WeatherForecast(String city){
         try{
             //vytvoreni url
@@ -80,13 +91,13 @@ public class WeatherForecast {
         }
     }
     
+    /**
+     * Metoda pro umožnění práce s polem s předpovědí, které tato třída vytváří
+     * @param x index vněšího pole
+     * @param y index vnotřního pole
+     * @return String na indexexh x a y
+     */
     public String getArrayValue(int x, int y){
        return this.array[x][y]; 
-    }
-//    public static void main(String[] args) throws IOException{
-//        WeatherForecast x = new WeatherForecast("Plzeň");
-//        System.out.println(x.response_json);
-//        System.out.println(Arrays.deepToString(x.array));
-//        System.out.println(x.array[3][3]);
-//    }   
+    }   
 }  

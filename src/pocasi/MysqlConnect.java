@@ -4,20 +4,30 @@ import java.sql.*;
 
 import java.util.Properties;
 
+/**
+ * Třída pro vytvoření spojení s databází
+ * @author Milan Abrahám, Anh Thai Hoang
+ */
 public class MysqlConnect {
-    // init database constants
+    /** Ovladač pro připojení k MySQL databázi */
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
+    /** IP adresa databáze */
     private static final String DATABASE_URL = "jdbc:mysql://139.59.139.93:3306/pocasi";
+    /** Přihlašovací údaj k databázi */
     private static final String USERNAME = "app";
+    /** Heslo k databázi */
     private static final String PASSWORD = "pocasi";
+    /** Počet maximálně odeslaných požadavků */
     private static final String MAX_POOL = "250";
 
-    // init connection object
+    /** Objekt připojení */
     private Connection connection;
-    // init properties object
+    /** Vlastnosti objektu připojení */
     private Properties properties;
 
-    // create properties
+    /** Získání vlastností připojení 
+    * @return objekt vlastností připojení
+    */
     private Properties getProperties() {
         if (properties == null) {
             properties = new Properties();
@@ -28,7 +38,10 @@ public class MysqlConnect {
         return properties;
     }
 
-    // connect database
+    /** 
+    * Metoda sloužící k vytvoření spojení s databází
+    * @return objekt připojení
+    */
     public Connection connect() {
         if (connection == null) {
             try {
@@ -41,7 +54,7 @@ public class MysqlConnect {
         return connection;
     }
 
-    // disconnect database
+    /** Metoda sloužící k ukončení spojení s databází */
     public void disconnect() {
         if (connection != null) {
             try {
@@ -51,6 +64,5 @@ public class MysqlConnect {
                 e.printStackTrace();
             }
         }
-    }
-    
+    } 
 }
