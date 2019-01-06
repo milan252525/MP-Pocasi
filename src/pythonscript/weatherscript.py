@@ -4,6 +4,7 @@
 import pyowm
 import time
 import mysql.connector
+import datetime
 
 mydb = mysql.connector.connect(
   host="139.59.139.93",
@@ -20,20 +21,20 @@ owm = pyowm.OWM("353b379036c2911483cfb9147c1ec9f0")
 
 cities = ["praha", "brno",  "ostrava", "plzen", "ceske budejovice", "hradec kralove", "jihlava", "karlovy vary", "liberec", "olomouc", "pardubice", "usti nad labem", "zlin"]
 
-
-
 while True:
-  for city in cities:
-    weather = owm.weather_at_place(city + ",CZ")
-    w = weather.get_weather()
-    print("{}: {} °C".format(city, str(w.get_temperature('celsius')["temp"])))
+    print(datetime.datetime.now().strftime("%d %B %H:%M"))
+    for city in cities:
+        try:
+            weather = owm.weather_at_place(city + ",CZ")
+            w = weather.get_weather()
+            print("{}: {} °C".format(city, str(w.get_temperature('celsius')["temp"])))
+            sql = "UPDATE mesta SET teplota = %s WHERE nazev = %s"
+            #sql = "INSERT INTO mesta (nazev, teplota) VALUES (%s, %s)"
+            val = (w.get_temperature('celsius')["temp"], city)
+            cursor.execute(sql, val)
+            time.sleep(2)
+        except Exception as e:
+            print("Chyba:" + str(e))
 
-    sql = "UPDATE mesta SET teplota = %s WHERE nazev = %s"
-    val = (w.get_temperature('celsius')["temp"], city)    
-    cursor.execute(sql, val)
-    time.sleep(2)
-
-  #sql = "INSERT INTO mesta (nazev, teplota) VALUES (%s, %s)"
-
-  mydb.commit()
-  time.sleep(300)
+    mydb.commit()
+    time.sleep(600)
