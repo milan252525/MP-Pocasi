@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import javax.swing.JLabel;
@@ -20,7 +21,7 @@ import javax.swing.JPanel;
  * Třída pro vykreslení uživatelského rozhraní
  * @author Milan Abrahám, Anh Thai Hoang
  */
-public class Pocasi extends javax.swing.JFrame {
+public class PocasiMain extends javax.swing.JFrame {
     /** Objekt s výsledkem vyhledávání počasí podle města */
     WeatherByCity weatherByCity;
     /** Objekt s výsledkem předpovědi počasí podle města */
@@ -35,7 +36,7 @@ public class Pocasi extends javax.swing.JFrame {
     /**
      * Konstruktor, hlavní okno aplikace
      */
-    public Pocasi() {
+    public PocasiMain() {
         initComponents();
         handler = new Handler(this);
         vyhledavciOkno.setVisible(false);
@@ -68,7 +69,10 @@ public class Pocasi extends javax.swing.JFrame {
             System.out.println(e);
         }
              
+        WeatherForecast predpoved = new WeatherForecast("q=Praha");
         
+        
+        System.out.println(Arrays.toString(predpoved.array[0]));
     }
     
     /**
@@ -78,7 +82,7 @@ public class Pocasi extends javax.swing.JFrame {
      */
     private HashMap getData(){
         HashMap<String, Double> result = new HashMap<>();
-        MysqlConnect mysqlConnect = new MysqlConnect();
+        MySQLConnect mysqlConnect = new MySQLConnect();
         String sql = "SELECT * FROM `mesta`";
         try {
             PreparedStatement statement = mysqlConnect.connect().prepareStatement(sql);
@@ -864,21 +868,22 @@ public class Pocasi extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PocasiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PocasiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PocasiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Pocasi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PocasiMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Zobrazení formuláře */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Pocasi().setVisible(true);
+                new PocasiMain().setVisible(true);
             }
         });
     }

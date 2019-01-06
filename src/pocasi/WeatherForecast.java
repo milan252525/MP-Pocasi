@@ -27,7 +27,7 @@ public class WeatherForecast {
     private boolean funguje = true;
     
     /** Pole polí obsahující informace o počasí pro následující dny */
-    private String[][] array;
+    public String[][] array;
 
     /**
      * Konstruktor třídy pro získání předpovědi pro město/lokaci

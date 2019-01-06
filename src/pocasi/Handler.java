@@ -2,20 +2,20 @@ package pocasi;
 
 /**
  * Handler pro získávání potřebných dat
- * @author Milan Abrahám, Anh THai Hoang
+ * @author Milan Abrahám, Anh Thai Hoang
  */
 public class Handler {
     /** 
     * Objekt třídy Pocasi, ze kterého bude handler získávat data
-    * @see Pocasi 
+    * @see PocasiMain 
     */
-    private Pocasi pocasi;
+    private PocasiMain pocasi;
     
     /**
      * Konstruktor handleru
      * @param pocasi Objekt třídy Pocasi, ze kterého handler získává data
      */
-    public Handler(Pocasi pocasi){
+    public Handler(PocasiMain pocasi){
            this.pocasi = pocasi;
     }
 
@@ -23,7 +23,7 @@ public class Handler {
      * Získání objektu třídy Pocasi, ze kterého handler získává data
      * @return objekt třídy Pocasi, ze kterého handler získává data
      */
-    public Pocasi getPocasi() {
+    public PocasiMain getPocasi() {
         return pocasi;
     }
     
@@ -31,7 +31,7 @@ public class Handler {
      * Změna objektu pocasi
      * @param pocasi nový objekt pocasi
      */
-    public void setPocasi(Pocasi pocasi) {
+    public void setPocasi(PocasiMain pocasi) {
         this.pocasi = pocasi;
     }
     

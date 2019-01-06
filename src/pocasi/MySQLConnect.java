@@ -8,7 +8,7 @@ import java.util.Properties;
  * Třída pro vytvoření spojení s databází
  * @author Milan Abrahám, Anh Thai Hoang
  */
-public class MysqlConnect {
+public class MySQLConnect {
     /** Ovladač pro připojení k MySQL databázi */
     private static final String DATABASE_DRIVER = "com.mysql.cj.jdbc.Driver";
     /** IP adresa databáze */

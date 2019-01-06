@@ -13,9 +13,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/milan/Documents/NetBeansProjects/Pocasi/src/pocasi/Handler.java</file>
+            <file>file:/C:/Users/milan/Documents/NetBeansProjects/Pocasi/src/pocasi/WeatherByCity.java</file>
             <file>file:/C:/Users/milan/Documents/NetBeansProjects/Pocasi/src/pocasi/WeatherForecast.java</file>
-            <file>file:/C:/Users/milan/Documents/NetBeansProjects/Pocasi/src/pocasi/WeatherByCoordinates.java</file>
             <file>file:/C:/Users/milan/Documents/NetBeansProjects/Pocasi/src/pocasi/Pocasi.java</file>
+            <file>file:/C:/Users/milan/Documents/NetBeansProjects/Pocasi/src/pythonscript/weatherscript.py</file>
         </group>
     </open-files>
 </project-private>
