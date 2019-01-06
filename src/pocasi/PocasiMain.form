@@ -4,7 +4,6 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="info">
       <Properties>
-        <Property name="defaultCloseOperation" type="int" value="2"/>
         <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
           <Rectangle value="[0, 0, 560, 420]"/>
         </Property>

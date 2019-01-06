@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import javax.swing.JLabel;
@@ -264,7 +263,6 @@ public class PocasiMain extends javax.swing.JFrame {
         pozice = new javax.swing.JLabel();
         pozadi = new javax.swing.JLabel();
 
-        info.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         info.setBounds(new java.awt.Rectangle(0, 0, 560, 420));
         info.setMinimumSize(new java.awt.Dimension(488, 515));
         info.setResizable(false);
