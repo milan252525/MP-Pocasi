@@ -68,11 +68,6 @@ public class PocasiMain extends javax.swing.JFrame {
         catch(Exception e){
             System.out.println(e);
         }
-             
-        WeatherForecast predpoved = new WeatherForecast("q=Praha");
-        
-        
-        System.out.println(Arrays.toString(predpoved.array[0]));
     }
     
     /**
