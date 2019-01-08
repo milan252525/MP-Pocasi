@@ -13,7 +13,7 @@
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Okno pro zobrazov&#xe1;n&#xed; detail&#x16f; o po&#x10d;as&#xed; */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Okno pro zobrazov&#xe1;n&#xed; detail&#x16f; o po&#x10d;as&#xed; */"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
@@ -27,7 +27,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Panel obsahuj&#xed;c&#xed; v&#x161;echny komponenty v okn&#x11b; info */"/>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Panel obsahuj&#xed;c&#xed; v&#x161;echny komponenty v okn&#x11b; info */"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -99,7 +99,7 @@
                 <Property name="text" type="java.lang.String" value="Nazev mesta"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* N&#xe1;zev m&#x11b;sta */"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** N&#xe1;zev m&#x11b;sta */"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="cas">
@@ -113,7 +113,7 @@
                 <Property name="text" type="java.lang.String" value="32. 13. 3002"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* &#x10c;as ve kter&#xe9;m bylo hled&#xe1;n&#xed; spu&#x161;t&#x11b;no */"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** &#x10c;as ve kter&#xe9;m bylo hled&#xe1;n&#xed; spu&#x161;t&#x11b;no */"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="teplota">
@@ -125,7 +125,7 @@
                 <Property name="text" type="java.lang.String" value="5&#xb0;C"/>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Teplota */"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Teplota */"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JTextArea" name="dalsiInfo">
@@ -141,7 +141,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; dal&#x161;&#xed; informace o po&#x10d;as&#xed; */"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; dal&#x161;&#xed; informace o po&#x10d;as&#xed; */"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="obrazek">
@@ -157,7 +157,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; ikonu po&#x10d;as&#xed; */"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; ikonu po&#x10d;as&#xed; */"/>
               </AuxValues>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel2">
@@ -167,7 +167,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Panel obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Panel obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
               </AuxValues>
 
               <Layout>
@@ -228,7 +228,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
@@ -245,7 +245,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel3">
@@ -262,7 +262,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
@@ -279,7 +279,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel5">
@@ -296,7 +296,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel6">
@@ -313,7 +313,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
+                    <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; p&#x159;edpov&#x11b;&#x10f; na n&#xe1;sleduj&#xed;c&#xed; dny */"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -372,7 +372,7 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JPanel(null){&#xa;    @Override&#xa;    protected void paintComponent(Graphics g)&#xa;    {&#xa;        g.setColor( getBackground() );&#xa;        g.fillRect(0, 0, getWidth(), getHeight());&#xa;        super.paintComponent(g);&#xa;    }&#xa;}"/>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Vyhled&#xe1;vac&#xed; okno */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Vyhled&#xe1;vac&#xed; okno */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -439,7 +439,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nehledejMouseClicked"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label, kter&#xfd; po kliknut&#xed; schov&#xe1; vyhled&#xe1;vac&#xed; panel */"/>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label, kter&#xfd; po kliknut&#xed; schov&#xe1; vyhled&#xe1;vac&#xed; panel */"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextField" name="vyhledavaniText">
@@ -452,7 +452,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Text field pro zad&#xe1;n&#xed; hledan&#xe9; obce */"/>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Text field pro zad&#xe1;n&#xed; hledan&#xe9; obce */"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="vyhledavaniButton">
@@ -463,7 +463,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vyhledavaniButtonActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Tla&#x10d;&#xed;tko pro potvrzen&#xed; vyhled&#xe1;v&#xe1;n&#xed; */"/>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Tla&#x10d;&#xed;tko pro potvrzen&#xed; vyhled&#xe1;v&#xe1;n&#xed; */"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JTextArea" name="chyba">
@@ -493,7 +493,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; chybov&#xe9; hl&#xe1;&#x161;en&#xed; */"/>
+            <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; chybov&#xe9; hl&#xe1;&#x161;en&#xed; */"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -518,7 +518,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="prahaMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Praha */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Praha */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -546,7 +546,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="plzenMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Plze&#x148; */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Plze&#x148; */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -574,7 +574,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="karlovy_varyMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Karovy Vary */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Karovy Vary */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -602,7 +602,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="usti_nad_labemMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto &#xda;st&#xed; nad Labem */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto &#xda;st&#xed; nad Labem */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -630,7 +630,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="liberecMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Liberec */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Liberec */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -658,7 +658,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hradec_kraloveMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Hradec Kr&#xe1;lov&#xe9; */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Hradec Kr&#xe1;lov&#xe9; */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -686,7 +686,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pardubiceMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Pardubice */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Pardubice */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -714,7 +714,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jihlavaMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Jihlava */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Jihlava */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -733,7 +733,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ceske_budejoviceMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto &#x10c;esk&#xe9; Bud&#x11b;jovice */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto &#x10c;esk&#xe9; Bud&#x11b;jovice */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -761,7 +761,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="brnoMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Brno */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Brno */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -789,7 +789,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="olomoucMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Olomouc */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Olomouc */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -817,7 +817,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="zlinMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Zl&#xed;n */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Zl&#xed;n */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -845,7 +845,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ostravaMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Ostrava */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; teplotu pro m&#x11b;sto Ostrava */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -865,7 +865,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="hledejMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label, kter&#xfd; po kliknut&#xed; zobraz&#xed; vyhled&#xe1;vac&#xed; panel */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label, kter&#xfd; po kliknut&#xed; zobraz&#xed; vyhled&#xe1;vac&#xed; panel */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -898,7 +898,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label zobrazuj&#xed;c&#xed; polohu hledan&#xe9; obce/m&#xed;sta  */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label zobrazuj&#xed;c&#xed; polohu hledan&#xe9; obce/m&#xed;sta  */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -925,7 +925,7 @@
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="pozadiMouseClicked"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="//* Label obsahuj&#xed;c&#xed; mapu */"/>
+        <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/** Label obsahuj&#xed;c&#xed; mapu */"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

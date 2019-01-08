@@ -216,6 +216,9 @@ public class PocasiMain extends javax.swing.JFrame {
     }
     
     @SuppressWarnings("unchecked")
+    /**
+     * Metoda pro inicializacikomponent vytvořená vývojovým prostředím
+     */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -906,75 +909,75 @@ public class PocasiMain extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    //* Label zobrazující teplotu pro město Brno */
+    /** Label zobrazující teplotu pro město Brno */
     private javax.swing.JLabel brno;
-    //* Čas ve kterém bylo hledání spuštěno */
+    /** Čas ve kterém bylo hledání spuštěno */
     private javax.swing.JLabel cas;
-    //* Label zobrazující teplotu pro město České Budějovice */
+    /** Label zobrazující teplotu pro město České Budějovice */
     private javax.swing.JLabel ceske_budejovice;
-    //* Label zobrazující chybové hlášení */
+    /** Label zobrazující chybové hlášení */
     private javax.swing.JTextArea chyba;
-    //* Label obsahující další informace o počasí */
+    /** Label obsahující další informace o počasí */
     private javax.swing.JTextArea dalsiInfo;
-    //* Label, který po kliknutí zobrazí vyhledávací panel */
+    /** Label, který po kliknutí zobrazí vyhledávací panel */
     private javax.swing.JLabel hledej;
-    //* Label zobrazující teplotu pro město Hradec Králové */
+    /** Label zobrazující teplotu pro město Hradec Králové */
     private javax.swing.JLabel hradec_kralove;
-    //* Okno pro zobrazování detailů o počasí */
+    /** Okno pro zobrazování detailů o počasí */
     private javax.swing.JDialog info;
-    //* Label obsahující předpověď na následující dny */
+    /** Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel1;
-    //* Label obsahující předpověď na následující dny */
+    /** Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel2;
-    //* Label obsahující předpověď na následující dny */
+    /** Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel3;
-    //* Label obsahující předpověď na následující dny */
+    /** Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel4;
-    //* Label obsahující předpověď na následující dny */
+    /** Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel5;
-    //* Label obsahující předpověď na následující dny */
+    /** Label obsahující předpověď na následující dny */
     private javax.swing.JLabel jLabel6;
-    //* Panel obsahující předpověď na následující dny */
+    /** Panel obsahující předpověď na následující dny */
     private javax.swing.JPanel jPanel2;
-    //* Panel obsahující všechny komponenty v okně info */
+    /** Panel obsahující všechny komponenty v okně info */
     private javax.swing.JPanel jPanel3;
-    //* Label zobrazující teplotu pro město Jihlava */
+    /** Label zobrazující teplotu pro město Jihlava */
     private javax.swing.JLabel jihlava;
-    //* Label zobrazující teplotu pro město Karovy Vary */
+    /** Label zobrazující teplotu pro město Karovy Vary */
     private javax.swing.JLabel karlovy_vary;
-    //* Label zobrazující teplotu pro město Liberec */
+    /** Label zobrazující teplotu pro město Liberec */
     private javax.swing.JLabel liberec;
-    //* Název města */
+    /** Název města */
     private javax.swing.JLabel nazevMesta;
-    //* Label, který po kliknutí schová vyhledávací panel */
+    /** Label, který po kliknutí schová vyhledávací panel */
     private javax.swing.JLabel nehledej;
-    //* Label zobrazující ikonu počasí */
+    /** Label zobrazující ikonu počasí */
     private javax.swing.JLabel obrazek;
-    //* Label zobrazující teplotu pro město Olomouc */
+    /** Label zobrazující teplotu pro město Olomouc */
     private javax.swing.JLabel olomouc;
-    //* Label zobrazující teplotu pro město Ostrava */
+    /** Label zobrazující teplotu pro město Ostrava */
     private javax.swing.JLabel ostrava;
-    //* Label zobrazující teplotu pro město Pardubice */
+    /** Label zobrazující teplotu pro město Pardubice */
     private javax.swing.JLabel pardubice;
-    //* Label zobrazující teplotu pro město Plzeň */
+    /** Label zobrazující teplotu pro město Plzeň */
     private javax.swing.JLabel plzen;
-    //* Label obsahující mapu */
+    /** Label obsahující mapu */
     private javax.swing.JLabel pozadi;
-    //* Label zobrazující polohu hledané obce/místa  */
+    /** Label zobrazující polohu hledané obce/místa  */
     private javax.swing.JLabel pozice;
-    //* Label zobrazující teplotu pro město Praha */
+    /** Label zobrazující teplotu pro město Praha */
     private javax.swing.JLabel praha;
-    //* Teplota */
+    /** Teplota */
     private javax.swing.JLabel teplota;
-    //* Label zobrazující teplotu pro město Ústí nad Labem */
+    /** Label zobrazující teplotu pro město Ústí nad Labem */
     private javax.swing.JLabel usti_nad_labem;
-    //* Tlačítko pro potvrzení vyhledávání */
+    /** Tlačítko pro potvrzení vyhledávání */
     private javax.swing.JButton vyhledavaniButton;
-    //* Text field pro zadání hledané obce */
+    /** Text field pro zadání hledané obce */
     private javax.swing.JTextField vyhledavaniText;
-    //* Vyhledávací okno */
+    /** Vyhledávací okno */
     private javax.swing.JPanel vyhledavciOkno;
-    //* Label zobrazující teplotu pro město Zlín */
+    /** Label zobrazující teplotu pro město Zlín */
     private javax.swing.JLabel zlin;
     // End of variables declaration//GEN-END:variables
 }
