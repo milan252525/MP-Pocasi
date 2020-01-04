@@ -1,6 +1,6 @@
-#Počasí (Weather)
-##Maturitní projekt (Graduation project) 2018/2019
-##Středoškolská odborná činnost 2019
+# Počasí (Weather)
+## Maturitní projekt (Graduation project) 2018/2019
+## Středoškolská odborná činnost 2019
 
 Authors:
 Milan Abrahám, Anh Thai Hoang
