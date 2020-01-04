@@ -8,6 +8,10 @@ Milan Abrahám, Anh Thai Hoang
 Banner:
 https://i.imgur.com/WsOe7pV.png
 
+###Documentation:
+[CZ] /documentation
+[CZ] /dist/javadoc
+
 ### Description:
 [CZ] Tato práce řeší vývoj aplikace pro vyhledávání informací o počasí. Hlavními cíli této práce jsou vytvoření připojení k serveru a získávání dat o počasí, které server poskytuje, vytvoření databáze, skriptu, který bude databázi aktualizovat a vytvoření uživatelského rozhraní. Výstupem této práce je funkční program pro operační systém Windows, napsaný v programovacím jazyce Java. Program je volně dostupný ve službě GitHub.
 
